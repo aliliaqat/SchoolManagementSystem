@@ -49,6 +49,8 @@ public class AccountController : Controller
         HttpContext.Session.Clear();
         return RedirectToAction("Login", "Account");
     }
+    public IActionResult GetDataFromDb()
+    { return View(); }
 }
 
 
