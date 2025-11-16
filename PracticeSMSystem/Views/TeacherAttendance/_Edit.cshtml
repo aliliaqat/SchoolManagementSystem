@@ -1,0 +1,63 @@
+﻿@model PracticeSMSystem.Data.Models.TeacherAttendance
+
+<div class="modal-header bg-primary text-white">
+    <h4 class="modal-title">Update Attendance</h4>
+    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+</div>
+
+<form id="editForm" asp-action="Edit" asp-controller="TeacherAttendance" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+
+    <div class="modal-body">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="form-group">
+            <label>Teacher</label>
+            <input class="form-control" value="@Model.Teacher?.FullName" disabled />
+            <input type="hidden" asp-for="TeacherId" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ClassRoomId">Class</label>
+            <select asp-for="ClassRoomId" class="form-control" asp-items="@(new SelectList(ViewBag.classroom, "Id", "ClassRName", Model.ClassRoomId))"></select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DepartmentId">Department</label>
+            <select asp-for="DepartmentId" class="form-control"
+                    asp-items="@(new SelectList(ViewBag.Departments, "Id", "DName", Model.DepartmentId))">
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="TeacherAttendanceDate">Attendance Date</label>
+            <input asp-for="TeacherAttendanceDate" class="form-control" type="date" />
+        </div>
+
+        <div class="form-group">
+            <input asp-for="TeacherAttendanceDate" class="form-control" type="date"
+             value="@Model.TeacherAttendanceDate?.ToString("yyyy-MM-dd")" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="TeacherAttendanceStatus">Attendance Status</label>
+            <select asp-for="TeacherAttendanceStatus" class="form-control">
+                <option value="Present">Present</option>
+                <option value="Absent">Absent</option>
+                <option value="Leave">Leave</option>
+                <option value="Late">Late</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="TeacherAttendanceRemarks">Remarks</label>
+            <textarea asp-for="TeacherAttendanceRemarks" class="form-control"></textarea>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary btn-sm">💾 Save</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+    </div>
+</form>

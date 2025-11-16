@@ -1,0 +1,64 @@
+﻿@model PracticeSMSystem.Data.Models.Staff
+
+@{
+    ViewData["Title"] = "Create Staff";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create Staff</h2>
+
+<form asp-controller="Staff" asp-action="Create" method="post" class="modal-content">
+    <div class="form-group">
+        <label>First Name</label>
+        <input asp-for="FirstName" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label>Last Name</label>
+        <input asp-for="LastName" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label>Gender</label>
+        <select asp-for="Gender" class="form-control">
+            <option value="">-- Select --</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Date of Birth</label>
+        <input asp-for="Dob" type="date" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Hire Date</label>
+        <input asp-for="HireDate" type="date" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label>Position</label>
+        <input asp-for="Position" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Role</label>
+        <input asp-for="RoleId" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Email</label>
+        <input asp-for="Email" type="email" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Phone</label>
+        <input asp-for="Phone" class="form-control" />
+    </div>
+
+   
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</form>

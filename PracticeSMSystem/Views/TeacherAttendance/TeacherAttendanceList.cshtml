@@ -1,0 +1,108 @@
+﻿@model IEnumerable<PracticeSMSystem.Data.Models.TeacherAttendanceDto>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <small>Teacher Attendance</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Teacher</a></li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Attendance Table</h3>
+                    <div class="box-tools">
+                        <div class="input-group">
+                            <button class="btn btn-sm btn-primary" onclick="openModal('/TeacherAttendance/Create')"> Attendance Create</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="dynamicContainer"></div>
+
+                <!-- 🔽 Filter Form Start -->
+                <form method="get" asp-action="TeacherAttendanceList" class="form-inline" style="margin-top:15px;">
+                   @*  <input type="text" name="SearchText" class="form-control" placeholder="Search by Teacher Name"
+                           value="@ViewBag.SearchText" style="margin-right:5px; width:200px;" /> *@
+
+                    <select name="TeacherId" class="form-control" style="margin-right:5px;">
+                        <option value="">-- All Teachers --</option>
+                        @foreach (var t in ViewBag.teachers)
+                        {
+                            <option value="@t.Id">@t.FullName</option>
+                        }
+                    </select>
+
+                    <select name="ClassRoomId" class="form-control" style="margin-right:5px;">
+                        <option value="">-- All Classes --</option>
+                        @foreach (var c in ViewBag.classroom)
+                        {
+                            <option value="@c.Id">@c.ClassRName</option>
+                        }
+                    </select>
+
+                    <select name="DepartmentId" class="form-control" style="margin-right:5px;">
+                        <option value="">-- All Departments --</option>
+                        @foreach (var d in ViewBag.Departments)
+                        {
+                            <option value="@d.Id">@d.DName</option>
+                        }
+                    </select>
+
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                    <a href="/TeacherAttendance/TeacherAttendanceList" class="btn btn-default">Reset</a>
+                </form>
+                <!-- 🔼 Filter Form End -->
+            </div>
+            <div class="box-body table-responsive no-padding" id="listContainer">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>AttendanceDate</th>
+                            <th>Name</th>
+                            <th>Departments</th>
+                            <th>Status</th>
+                            <th>Class</th>
+                            <th style="text-align:center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var teacher in Model)
+                            {
+                                <tr>
+                                    <td>@teacher.TeacherAttendanceDate</td>
+                                    <td>@teacher.FullName</td>
+                                    <td>@teacher.DName</td>
+                                    <td>@teacher.TeacherAttendanceStatus</td>
+                                    <td>@teacher.ClassRName</td>
+                                    <td style="text-align:center">
+                                        @* <button class="btn btn-sm btn-success" onclick="openModal('/Teacher/Edit')">Edit</button> *@
+                                        <a href="@Url.Action("Detail", "TeacherAttendance", new { id = teacher.Id })" class="btn btn-info btn-sm">Details</a>
+                                        <a href="@Url.Action("Delete", "TeacherAttendance", new { id = teacher.Id })" class="btn btn-danger btn-sm">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="11" class="text-center">No Attendance records found.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>

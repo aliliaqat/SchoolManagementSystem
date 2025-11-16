@@ -1,0 +1,134 @@
+﻿@model PracticeSMSystem.Data.Models.Subject
+
+@{
+    ViewData["Title"] = Model.Id == 0 ? "Add Subject" : "Edit Subject";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- Content Wrapper -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="col-md-8 offset-md-2">
+            <h2>@(Model.Id == 0 ? "Add Subject" : "Edit Subject")</h2>
+
+            <form asp-controller="Subject" asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-3">
+                    <label asp-for="SubjectName" class="form-label"></label>
+                    <input asp-for="SubjectName" class="form-control" required />
+                    <span asp-validation-for="SubjectName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="SubjectCode" class="form-label"></label>
+                    <input asp-for="SubjectCode" type="text" class="form-control" required />
+                    <span asp-validation-for="SubjectCode" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="DepartmentId" class="form-label">Department Session</label>
+                    <select asp-for="DepartmentId"
+                            class="form-control"
+                            asp-items="@(new SelectList(ViewBag.departmentlist, "Id", "DName", Model?.DepartmentId))">
+                        <option value="">-- No Parent Session --</option>
+                    </select>
+                    <span asp-validation-for="DepartmentId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ClassRoomId" class="form-label">Class Session</label>
+                    <select asp-for="ClassRoomId"
+                            class="form-control"
+                            asp-items="@(new SelectList(ViewBag.classlist, "Id", "ClassRName", Model?.ClassRoomId))">
+                        <option value="">-- No Parent Session --</option>
+                    </select>
+                    <span asp-validation-for="ClassRoomId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="TeacherId" class="form-label">Teacher Session</label>
+                <select asp-for="TeacherId"
+                        class="form-control"
+                        asp-items="@(new SelectList(ViewBag.teacherlist, "Id", "FullName", Model?.TeacherId))">
+                    <option value="">-- No Parent Session --</option>
+                </select>
+                    <span asp-validation-for="TeacherId" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-success">Save</button>
+                <a asp-controller="ClassRoom" asp-action="Index" class="btn btn-secondary">Back</a>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+
+@* @model PracticeSMSystem.Data.Models.Subject
+
+@{
+    ViewData["Title"] = Model.Id == 0 ? "Add Subject" : "Edit Subject";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="mb-4">@ViewData["Title"]</h2>
+
+            <form asp-controller="Subject" asp-action="Edit" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-3">
+                    <label asp-for="SubjectName" class="form-label"></label>
+                    <input asp-for="SubjectName" class="form-control" required />
+                    <span asp-validation-for="SubjectName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="SubjectCode" class="form-label"></label>
+                    <input asp-for="SubjectCode" class="form-control" required />
+                    <span asp-validation-for="SubjectCode" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="DepartmentId" class="form-label"></label>
+                    <select asp-for="DepartmentId" class="form-control"
+                            asp-items="@(new SelectList(ViewBag.departmentlist, "Id", "DName", Model?.DepartmentId))">
+                        <option value="">-- Select Department --</option>
+                    </select>
+                    <span asp-validation-for="DepartmentId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ClassRoomId" class="form-label"></label>
+                    <select asp-for="ClassRoomId" class="form-control"
+                            asp-items="@(new SelectList(ViewBag.classlist, "Id", "ClassRName", Model?.ClassRoomId))">
+                        <option value="">-- Select Class --</option>
+                    </select>
+                    <span asp-validation-for="ClassRoomId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="TeacherId" class="form-label"></label>
+                    <select asp-for="TeacherId" class="form-control"
+                            asp-items="@(new SelectList(ViewBag.teacherlist, "Id", "FullName", Model?.TeacherId))">
+                        <option value="">-- Select Teacher --</option>
+                    </select>
+                    <span asp-validation-for="TeacherId" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-success">Save</button>
+                <a asp-controller="Subject" asp-action="Index" class="btn btn-secondary">Back</a>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+ *@

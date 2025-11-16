@@ -1,0 +1,107 @@
+﻿@model IEnumerable<PracticeSMSystem.Data.Models.StaffAttendanceListDto>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <small>Staff Attendance</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Staff</a></li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Attendance Table</h3>
+                    <div class="box-tools">
+                        <div class="input-group">
+                            <button class="btn btn-sm btn-primary" onclick="openModal('/StaffAttendance/Create')"> Attendance Create</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="dynamicContainer"></div>
+
+                <!-- 🔽 Filter Form Start -->
+                <form method="get" asp-action="StaffAttendanceList" class="form-inline" style="margin-top:15px;">
+                    
+                    <div class="form-group" style="margin-right:10px;">
+                        <label for="AttendanceDate" style="margin-right:5px;">Date:</label>
+                        <input type="date" id="AttendanceDate" name="AttendanceDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                    </div>
+
+                    <select name="StaffId" class="form-control" style="margin-right:5px;">
+                        <option value="">-- All Staff Members --</option>
+                        @foreach (var t in ViewBag.staff)
+                        {
+                            <option value="@t.Id">@t.FullName</option>
+                        }
+                    </select>
+
+                    <select name="DepartmentId" class="form-control" style="margin-right:5px;">
+                        <option value="">-- All Departments --</option>
+                        @foreach (var d in ViewBag.Departments)
+                        {
+                            <option value="@d.Id">@d.DName</option>
+                        }
+                    </select>
+
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                    <a href="/StaffAttendance/StaffAttendanceList" class="btn btn-default">Reset</a>
+                </form>
+                <!-- 🔼 Filter Form End -->
+            </div>
+            <div class="box-body table-responsive no-padding" id="listContainer">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>AttendanceDate</th>
+                            <th>Name</th>
+                            <th>Departments</th>
+                            <th>Status</th>
+                            <th>Remarks</th>
+                            <th style="text-align:center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var staff in Model)
+                            {
+                                <tr>
+                                    <td>@staff.AttendanceDate</td>
+                                    <td>@staff.FullName</td>
+                                    <td>@staff.DName</td>
+                                    <td>@staff.AttendanceStatus</td>
+                                    <td>@staff.AttendanceRemarks</td>
+                                    <td style="text-align:center">
+                                        @* <button class="btn btn-sm btn-success" onclick="openModal('/Teacher/Edit')">Edit</button> *@
+                                        <a href="@Url.Action("Detail", "StaffAttendance", new { id = staff.Id })" class="btn btn-info btn-sm">Details</a>
+                                        <a href="@Url.Action("Delete", "StaffAttendance", new { id = staff.Id })" class="btn btn-danger btn-sm">Delete</a>
+
+
+                                       
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="11" class="text-center">No Attendance records found.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+

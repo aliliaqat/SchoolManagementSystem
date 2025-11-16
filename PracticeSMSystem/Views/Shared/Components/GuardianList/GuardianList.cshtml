@@ -1,0 +1,138 @@
+﻿@* @model IEnumerable<PracticeSMSystem.Data.Models.Guardian>
+
+@{
+    ViewData["Title"] = "Guardian List";
+}
+
+<section class="content-header">
+    <h1>Guardian Record <small>List</small></h1>
+</section>
+
+<section class="content">
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">All Guardians</h3>
+            <div class="box-tools">
+                <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#guardianModal">
+                    Add New Guardian
+                </button>
+            </div>
+        </div>
+
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Guardian Name</th>
+                        @* <th>Relationship</th> *@
+                        @* <th>Phone</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                        <th>Student Count</th>
+                        <th style="text-align:center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var g in Model)
+                    {
+                        <tr>
+                            <td>@g.FullName</td>
+                           @*  <td>@g.GRelationship</td> *@
+                            @* <td>@g.GPhone</td>
+                            <td>@g.GEmail</td>
+                            <td>@g.GAddress</td>
+                            <td>@(g.GuardianStudents?.Count ?? 0)</td>
+                            <td style="text-align:center">
+                                <a asp-action="Details" asp-route-id="@g.Id" class="btn btn-sm btn-success">Details</a>
+
+                                <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#addStudentModal-@g.Id">
+                                    Add Student
+                                </button>
+
+                                <form asp-action="Delete" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" value="@g.Id" />
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+
+                                @await Component.InvokeAsync("AddStudentModal", new { guardianId = g.Id })
+                            </td>
+                        </tr> *@
+                   @*  }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+@await Component.InvokeAsync("CreateGuardianModal") 
+ *@
+
+
+@model IEnumerable<PracticeSMSystem.Data.Models.Student>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var selectedId = ViewBag.SelectedStudentId as int?;
+    var guardianStudents = ViewBag.GuardianStudents as List<PracticeSMSystem.Data.Models.GuardianStudent>;
+}
+
+<section class="content-header">
+    <h1><small>Students and Guardians</small></h1>
+</section>
+
+<section class="content">
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">Student List</h3>
+        </div>
+
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Class</th>
+                        <th>Gender</th>
+                        <th>Email</th>
+                        <th style="text-align:center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var stu in Model)
+                    {
+                        <tr>
+                            <td>@stu.FullName</td>
+                            <td>@stu.ClassRoom</td>
+                            <td>@stu.Gender</td>
+                            <td>@stu.Email</td>
+                            <td style="text-align:center">
+                                <a asp-action="List" asp-route-id="@stu.Id" class="btn btn-sm btn-primary">
+                                    View Details
+                                </a>
+                            </td>
+                        </tr>
+
+                        @* Inline expand section *@
+                        @if (selectedId != null && selectedId == stu.Id)
+                        {
+                            <tr>
+                                <td colspan="5" class="p-0">
+                                    @if (guardianStudents != null && guardianStudents.Any())
+                                    {
+                                        @await Html.PartialAsync("_GuardianAndStudentsPartial", guardianStudents)
+                                    }
+                                    else
+                                    {
+                                        <div class="text-center text-muted p-3">
+                                            No guardians found for this student.
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

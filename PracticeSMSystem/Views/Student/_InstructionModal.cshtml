@@ -1,0 +1,26 @@
+﻿    @model PracticeSMSystem.Data.Models.StudentList
+ 
+<div class="modal fade" id="instructionModal_@Model.StudentId" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form method="post" asp-action="SaveInstruction" asp-controller="Student">
+                <div class="modal-header">
+                    <h5 class="modal-title">Instructions for @Model.StudentFName</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="StudentId" value="@Model.StudentId" />
+                    <textarea name="InstructionText" class="form-control" rows="5" placeholder="Write care instructions here...">@Model.SpecialInstruction </textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Save</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+ 
+
+
+

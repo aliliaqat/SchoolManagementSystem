@@ -1,0 +1,116 @@
+﻿@model IEnumerable<PracticeSMSystem.Data.Models.Session>
+@{
+    ViewData["Title"] = "Sessions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="content-header">
+    <h1>
+        Session
+        <small>Of Classes</small>
+    </h1>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header d-flex justify-content-between mb-0">
+                    <h4>Session List</h4>
+                    <div class="box-tools">
+                        <button class="btn btn-success" data-toggle="modal" data-target="#addSessionModal">Add New Session</button>
+                    </div>
+                </div>
+
+                <!-- ✅ Responsive Table Wrapper -->
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Session Name</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Linked Classes</th>
+                                <th style="text-align:center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var session in Model)
+                            {
+                                <tr>
+                                    <td>@session.SessionName</td>
+                                    <td>@session.StartDate.ToString("dd-MMM-yyyy")</td>
+                                    <td>@session.EnDate.ToString("dd-MMM-yyyy")</td>
+                                    <td>
+                                        @if (session.classroom != null && session.classroom.Any())
+                                        {
+                                            <ul class="list-unstyled mb-0">
+                                                @foreach (var cls in session.classroom)
+                                                {
+                                                    <li>@cls.ClassRName</li>
+                                                }
+                                            </ul>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">No classes linked</span>
+                                        }
+                                    </td>
+                                    <td style="text-align:center">
+                                        <a href="@Url.Action("Edit", "Session", new { id = session.Id })" class="btn btn-warning btn-sm">Edit</a>
+                                        <a href="@Url.Action("Details", "Session", new { id = session.Id })" class="btn btn-info btn-sm">Details</a>
+                                        <a href="@Url.Action("Delete", "Session", new { id = session.Id })" class="btn btn-danger btn-sm">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ✅ Add Session Modal -->
+<div class="modal fade" id="addSessionModal" tabindex="-1" role="dialog" aria-labelledby="addSessionModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form asp-action="Create" asp-controller="Session" method="post" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addSessionModalLabel">Add New Session</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="SessionName">Session Name</label>
+                    <input type="text" class="form-control" name="SessionName" required />
+                </div>
+                <div class="form-group">
+                    <label for="StartDate">Start Date</label>
+                    <input type="date" class="form-control" name="StartDate" required />
+                </div>
+                <div class="form-group">
+                    <label for="EnDate">End Date</label>
+                    <input type="date" class="form-control" name="EnDate" required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="SelectedClassRoomIds">Assign ClassRooms</label>
+                <select class="form-control"
+                        name="SelectedClassRoomIds"
+                        multiple="multiple">
+                    @foreach (var cls in (List<PracticeSMSystem.Data.Models.ClassRoom>)ViewBag.ClassRList)
+                    {
+                        <option value="@cls.Id">@cls.ClassRName</option>
+                    }
+                </select>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Session</button>
+            </div>
+        </form>
+    </div>
+</div>

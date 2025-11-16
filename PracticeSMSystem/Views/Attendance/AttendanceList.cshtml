@@ -1,0 +1,127 @@
+﻿@model IEnumerable<PracticeSMSystem.Data.Models.AttendanceDto>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <small>Student Attendance</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Student</a></li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Attendance Table</h3>
+                    <div class="box-tools">
+                        <div class="input-group">
+                            <button class="btn btn-sm btn-primary" onclick="openModal('/Attendance/Create')"> Attendance Create</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="dynamicContainer"></div>
+
+
+                <!-- 🔽 Filter Form Start -->
+                <form method="get" asp-action="AttendanceList" class="form-inline" style="margin-top:15px;">
+                    <select name="StudentId" class="form-control" style="margin-right:5px;">
+                        <option value="">-- All Students --</option>
+                        @foreach (var s in ViewBag.Students)
+                        {
+                            <option value="@s.Id">@s.StudentFName @s.StudentLName</option>
+                        }
+                    </select>
+
+                    <select name="ClassRoomId" class="form-control" style="margin-right:5px;">
+                        <option value="">-- All Classes --</option>
+                        @foreach (var c in ViewBag.classroom)
+                        {
+                            <option value="@c.Id">@c.ClassRName</option>
+                        }
+                    </select>
+
+                    <select name="SectionId" class="form-control" style="margin-right:5px;">
+                        <option value="">-- All Sections --</option>
+                        @foreach (var sec in ViewBag.Sections)
+                        {
+                            <option value="@sec.Id">@sec.SectionName</option>
+                        }
+                    </select>
+
+                    <select name="SubjectId" class="form-control" style="margin-right:5px;">
+                        <option value="">-- All Subjects --</option>
+                        @foreach (var sub in ViewBag.Subjects)
+                        {
+                            <option value="@sub.Id">@sub.SubjectName</option>
+                        }
+                    </select>
+
+                    <select name="SessionId" class="form-control" style="margin-right:5px;">
+                        <option value="">-- All Sessions --</option>
+                        @foreach (var ss in ViewBag.Sessions)
+                        {
+                            <option value="@ss.Id">@ss.SessionName</option>
+                        }
+                    </select>
+
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                    <a href="/Attendance/AttendanceList" class="btn btn-default">Reset</a>
+                </form>
+                <!-- 🔼 Filter Form End -->
+            </div>
+            <div class="box-body table-responsive no-padding" id="listContainer">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>AttendanceDate</th>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th>Remarks</th>
+                            <th>ClassName</th>
+                            <th>Section</th>
+                            <th>Subject</th>
+                            <th style="text-align:center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var student in Model)
+                            {
+                                <tr>
+                                    <td>@student.AttendanceDate</td>
+                                    <td>@student.FullName</td>
+                                    <td>@student.AttendanceStatus</td>
+                                    <td>@student.AttendanceRemarks</td>
+                                    <td>@student.ClassRName</td>
+                                    <td>@student.SectionName</td>
+                                    <td>@student.SubjectName</td>
+                                    <td style="text-align:center">
+                                            @* <button class="btn btn-sm btn-success" onclick="openModal('/Teacher/Edit')">Edit</button> *@
+                                        <a href="@Url.Action("Detail", "Attendance", new { id = student.Id })" class="btn btn-info btn-sm">Details</a>
+                                        <a href="@Url.Action("Delete", "Attendance", new { id = student.Id })" class="btn btn-danger btn-sm">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="11" class="text-center">No teacher records found.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+

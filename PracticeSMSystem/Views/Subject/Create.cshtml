@@ -1,0 +1,75 @@
+﻿l@model PracticeSMSystem.Data.Models.Subject
+
+@{
+    ViewData["Title"] = "Add new Subject";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form asp-controller="Subject" asp-action="Create" method="post" class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Add new Subject</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <!-- Subject Name -->
+                <div class="form-group">
+                    <label for="SubjectName">Subject Name</label>
+                    <input type="text" class="form-control" id="SubjectName" name="SubjectName" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="SubjectCode">Subject Code</label>
+                    <input type="text" class="form-control" id="SubjectCode" name="SubjectCode" required />
+                </div>
+
+                <!-- Department -->
+                 <div class="form-group">
+                    <label for="DepartmentId">Department</label>
+                    <select class="form-control" id="DepartmentId" name="DepartmentId">
+                        <option value="">-- Select Department --</option>
+                        @foreach (var dep in ViewBag.departmentlist as List<PracticeSMSystem.Data.Models.Department>)
+                        {
+                            <option value="@dep.Id">@dep?.DName</option>
+                        }
+                    </select>
+                </div> 
+
+                <!-- Class -->
+                <div class="form-group">
+                    <label for="ClassId">Class</label>
+                    <select class="form-control" id="ClassRoomId" name="ClassRoomId" >
+                        <option value="">-- Select Class --</option>
+                        @foreach (var cl in ViewBag.classlist as List<PracticeSMSystem.Data.Models.ClassRoom>)
+                        {
+                            <option value="@cl.Id">@cl?.ClassRName</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Teacher -->
+                <div class="form-group">
+                    <label for="TeacherId">Teacher</label>
+                    <select class="form-control" id="TeacherId" name="TeacherId">
+                        <option value="">-- Select Teacher --</option>
+                        @foreach (var tec in ViewBag.teacherlist as List<PracticeSMSystem.Data.Models.Teacher>)
+                        {
+                            <option value="@tec.Id">@($"{tec?.TFirstName}{tec?.TLastName}")</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Add Class</button>
+            </div>
+        </form>
+    </div>
+</div>

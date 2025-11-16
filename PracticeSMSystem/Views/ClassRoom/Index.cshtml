@@ -1,0 +1,144 @@
+﻿@model IEnumerable<PracticeSMSystem.Data.Models.ClassRoom>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        Record of
+        <small>ClassRooms</small>
+    </h1>
+
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">ClassRoom List</h3>
+                    <div class="box-tools">
+                        <div class="input-group">
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                                Add new Class
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>Class Name</th>
+                            <th>Assigned Teachers</th>
+                            <th>Description</th>
+                            <th>Department</th>
+                            <th>Session</th>
+                            <th style="text-align:center">Actions</th>
+                        </tr>
+                        
+                            @if (Model != null && Model.Any())
+                            {
+                                foreach (var croom in Model)
+                                {
+                                    <tr>
+                                       <td>@croom.ClassRName</td>
+                                    <td>
+                                        @if (croom.TeacherClasses.Any())
+                                        {
+                                            <span>
+                                                @string.Join(", ", croom.TeacherClasses.Select(tc => tc.Teacher.TFirstName + " " + tc.Teacher.TLastName))
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">No Teacher Assigned</span>
+                                        }
+                                    </td>
+                                       <td>@croom.Description</td>
+                                       <td>@croom.Department.DName</td>
+                                       <td>@croom.Session.SessionName</td>
+                                        <td style="text-align:center">
+                                           @*  <a href="@Url.Action("Edit", "ClassRoom", new { id = croom.Id })" class="btn btn-warning btn-sm">Edit</a> *@
+                                        <a href="@Url.Action("Details", "ClassRoom", new { id = croom.Id })" class="btn btn-info btn-sm">Details</a>
+                                        <a href="@Url.Action("Delete", "ClassRoom", new { id = croom.Id })" class="btn btn-danger btn-sm">Delete</a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="11" class="text-center">No Class records found.</td>
+                                </tr>
+                            }
+                        
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ✅ Modal with Form -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form asp-controller="ClassRoom" asp-action="Create" method="post" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Create Class</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group has-feedback">
+                    <input type="text" class="form-control" placeholder="Class Name" name="ClassRName" required>
+                </div>
+
+                <div class="form-group">
+                    <select class="form-control" id="DepartmentId" name="DepartmentId" required>
+                        <option value="">-- Select Department --</option>
+                        @foreach (var dep in ViewBag.departmentlist as List<PracticeSMSystem.Data.Models.Department>)
+                        {
+                            <option value="@dep.Id">@dep.DName</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <select class="form-control" id="SessionId" name="SessionId" required>
+                        <option value="">-- Select Session --</option>
+                        @foreach (var sess in ViewBag.sessionlist as List<PracticeSMSystem.Data.Models.Session>)
+                        {
+                            <option value="@sess.Id">@sess.SessionName</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="SelectedTeacherIds">Assign Teachers</label>
+                    <select class="form-control" id="SelectedTeacherIds" name="SelectedTeacherIds" multiple>
+                        @foreach (var teacher in ViewBag.teacherList as MultiSelectList)
+                        {
+                            <option value="@teacher.Value">@teacher.Text</option>
+                        }
+                    </select>
+                    <small class="text-muted">You can select multiple teachers by holding CTRL key.</small>
+                </div>
+
+                <div class="form-group has-feedback">
+                    <textarea class="form-control" placeholder="Class Description" name="Description" rows="3" required></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+

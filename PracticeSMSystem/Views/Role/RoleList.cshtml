@@ -1,0 +1,98 @@
+﻿@model IEnumerable<PracticeSMSystem.Data.Models.Role>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        Role Manager
+        <small>Create and manage roles</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Role</a></li>
+        <li class="active">Create</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Roles list</h3>
+                    <div class="box-tools">
+                        <div class="input-group">
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                                Add Role
+                            </button>
+                        </div>
+                    </div>
+
+                </div><!-- /.box-header -->
+
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>Role Name</th>
+                            <th>Date Created</th>
+                            <th>Created by</th>
+                            <th>Status</th>
+                            <th>Role Description</th>
+                            <th></th>
+                        </tr>
+                        @foreach (var role in Model)
+                        {
+                            <tr>
+                                <td>@role.RoleName</td>
+                                <td>@role.DateCreated?.ToString("dd-MMM-yyyy")</td>
+                                <td>@role.CreatedBy</td>
+                                <td>
+                                    <span class="label label-success" style="display: inline-block; vertical-align: middle;">
+                                        @role.Status
+                                    </span>
+                                </td>
+                                <td>@role.RoleDescription</td>
+                                <td class="text-end" style="float: right;">
+                                    <a asp-controller="Permission" asp-action="Manage" asp-route-roleId="@role.Id" class="btn btn-primary">
+                                        Manage Permissions
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div>
+    </div>
+</section>
+
+<!-- ✅ Modal with Form -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form asp-controller="Role" asp-action="Create" method="post" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Create Role</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group has-feedback">
+                    <input type="text" class="form-control" placeholder="Role Name" name="RoleName" required>
+                </div>
+
+                <div class="form-group has-feedback">
+                    <textarea class="form-control" placeholder="Role Description" name="RoleDescription" rows="3" required></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+﻿@model PracticeSMSystem.Data.Models.Teacher
+
+<div class="modal-header bg-primary text-white">
+    <h4 class="modal-title">Add New Teacher</h4>
+    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+</div>
+
+<form asp-action="Create" asp-controller="Teacher" data-ajax="true" data-target="#teachersList" method="post">
+    @Html.AntiForgeryToken()
+    <div class="modal-body">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="form-group">
+            <label asp-for="TFirstName">First Name</label>
+            <input asp-for="TFirstName" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="TLastName">Last Name</label>
+            <input asp-for="TLastName" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="HireDate">Hire Date</label>
+            <input asp-for="HireDate" type="date" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Gender">Gender</label>
+            <select asp-for="Gender" asp-items="ViewBag.GenderList" class="form-control">
+                <option value="">-- Select Gender --</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ClassRoomId">Assign Class</label>
+            <select asp-for="ClassRoomId" asp-items="ViewBag.ClassList" class="form-control">
+                <option value="">-- Select Class --</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DepartmentId">Department</label>
+            <select asp-for="DepartmentId" asp-items="ViewBag.departmentlist" class="form-control">
+                <option value="">-- Select Department --</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-success btn-sm">💾 Save</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+    </div>
+</form>

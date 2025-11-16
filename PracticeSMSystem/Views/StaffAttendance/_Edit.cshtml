@@ -1,0 +1,53 @@
+﻿@* @model PracticeSMSystem.Data.Models.StaffAttendance
+
+<div class="modal-header bg-primary text-white">
+    <h4 class="modal-title">Update Attendance</h4>
+    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+</div>
+
+<form id="editForm" asp-action="Edit" asp-controller="StaffAttendance" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+
+    <div class="modal-body">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="form-group">
+            <label>Staff</label>
+            <input class="form-control" value="@Model.Staff?.FullName" disabled />
+            <input type="hidden" asp-for="StaffId" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DepartmentId">Department</label>
+            <select asp-for="DepartmentId" class="form-control"
+                    asp-items="@(new SelectList(ViewBag.Departments, "Id", "DName", Model.DepartmentId))">
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="AttendanceRemarks">Remarks</label>
+            <textarea asp-for="AttendanceRemarks" class="form-control"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="AttendanceStatus">Attendance Status</label>
+            <select asp-for="AttendanceStatus" class="form-control">
+                <option value="Present">Present</option>
+                <option value="Absent">Absent</option>
+                <option value="Leave">Leave</option>
+                <option value="Late">Late</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <input asp-for="UpdatedOn" class="form-control" type="date"
+                   value="@Model.UpdatedOn?.ToString("yyyy-MM-dd")" />
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary btn-sm">💾 Save</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+    </div>
+</form> *@

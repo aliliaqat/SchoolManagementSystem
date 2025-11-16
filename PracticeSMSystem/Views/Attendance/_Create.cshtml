@@ -1,0 +1,64 @@
+﻿@* @model PracticeSMSystem.Data.Models.Attendance
+
+<div class="modal-header bg-primary text-white">
+    <h4 class="modal-title">Add New Attendance Record</h4>
+    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+</div>
+
+<form asp-action="Create" asp-controller="Attendance" data-ajax="true" data-target="#listContainer" method="post">
+    @Html.AntiForgeryToken()
+    <div class="modal-body">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="form-group">
+            <label asp-for="AttendanceDate">Attendance Date</label>
+            <input asp-for="AttendanceDate" type="date" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Student</label>
+            <select asp-for="StudentId" class="form-control" asp-items="@(new SelectList(ViewBag.students, "Id", "StudentFName"))">
+                <option value="">-- Select Student --</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Class</label>
+            <select asp-for="ClassRoomId" class="form-control" asp-items="@(new SelectList(ViewBag.classroom, "Id", "ClassRName"))">
+                <option value="">-- Select Class --</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Section</label>
+            <select asp-for="SectionId" class="form-control" asp-items="@(new SelectList(ViewBag.sections, "Id", "SectionName"))">
+                <option value="">-- Select Section --</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Subject</label>
+            <select asp-for="SubjectId" class="form-control" asp-items="@(new SelectList(ViewBag.subjects, "Id", "SubjectName"))">
+                <option value="">-- Select Subject --</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Status</label>
+            <select asp-for="AttendanceStatus" class="form-control" asp-items="ViewBag.AttendanceStatus">
+                <option value="">-- Select Status --</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Remarks</label>
+            <textarea asp-for="AttendanceRemarks" class="form-control"></textarea>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary btn-sm">💾 Save</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+ *@

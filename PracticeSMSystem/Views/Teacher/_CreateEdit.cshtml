@@ -1,0 +1,113 @@
+﻿ @model PracticeSMSystem.Data.Models.Teacher
+
+@{
+    var isEdit = (Model != null && Model?.Id > 0);
+    var actionName = isEdit ? "Edit" : "Create";
+    var title = isEdit ? "Update Teacher" : "Add New Teacher";
+}
+
+<div class="modal-header">
+    <h4 class="modal-title">@title</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<form asp-controller="Teacher" asp-action="@actionName" method="post" id="teacherForm">
+    <div class="modal-body">
+
+        <!-- Validation Summary -->
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <label asp-for="TFirstName">First Name</label>
+            <input asp-for="TFirstName" class="form-control" required />
+            <span asp-validation-for="TFirstName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="TLastName">Last Name</label>
+            <input asp-for="TLastName" class="form-control" required />
+            <span asp-validation-for="TLastName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="HireDate">Hire Date</label>
+            <input asp-for="HireDate" type="date" class="form-control" required
+                   value="@(Model.HireDate == default(DateTime) ? DateTime.Now.ToString("yyyy-MM-dd") : Model.HireDate.ToString("yyyy-MM-dd"))" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DateOfBirth">Date Of Birth</label>
+            <input asp-for="DateOfBirth" type="date" class="form-control" />
+            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+        </div>
+        
+        <div class="form-group">
+            <label asp-for="Qualification">Qualification</label>
+            <input asp-for="Qualification" class="form-control" />
+            <span asp-validation-for="Qualification" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Status">Status</label>
+            <input asp-for="Status" class="form-control" />
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Salary">Salary</label>
+            <input asp-for="Salary" class="form-control" />
+            <span asp-validation-for="Salary" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Email">Email</label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PhoneNo">PhoneNo</label>
+            <input asp-for="PhoneNo" class="form-control" />
+            <span asp-validation-for="PhoneNo" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Address">Address</label>
+            <input asp-for="Address" class="form-control" />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Activity">Activity</label>
+            <input asp-for="Activity" class="form-control" />
+            <span asp-validation-for="Activity" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Gender">Gender</label>
+            <select asp-for="Gender" class="form-control" required>
+                <option value="">-- Select Gender --</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+            <span asp-validation-for="Gender" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DepartmentId">Department</label>
+            <select asp-for="DepartmentId" asp-items="ViewBag.departmentlist" class="form-control">
+                <option value="">-- Select Department --</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+ 

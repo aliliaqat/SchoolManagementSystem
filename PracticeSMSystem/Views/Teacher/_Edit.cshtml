@@ -1,0 +1,110 @@
+﻿@model PracticeSMSystem.Data.Models.Teacher
+@{
+    var sectionName = ViewBag.Section as string;
+}
+
+<section class="content-header">
+    <h1>Edit @sectionName Info</h1>
+</section>
+
+<section class="content">
+    <div class="box box-default">
+        <div class="box-body">
+            <form asp-action="Edit" method="post" data-ajax="true">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="section" value="@ViewBag.Section" />
+                <input type="hidden" asp-for="Id" />
+
+                @if (sectionName == "General")
+                {
+                    <div class="mb-3">
+                        <label asp-for="TFirstName"></label>
+                        <input asp-for="TFirstName" class="form-control" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="TLastName"></label>
+                        <input asp-for="TLastName" class="form-control" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Gender"></label>
+                        <select asp-for="Gender" asp-items="ViewBag.GenderList" class="form-control">
+                            <option value="">-- Select Gender --</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="DateOfBirth"></label>
+                        <input asp-for="DateOfBirth" type="date" class="form-control" />
+                    </div>
+                }
+                else if (sectionName == "Teacher")
+                {
+                    <div class="mb-3">
+                        <label asp-for="Qualification"></label>
+                        <input asp-for="Qualification" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="HireDate"></label>
+                        <input asp-for="HireDate" type="date" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Status"></label>
+                        <input asp-for="Status" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Salary"></label>
+                        <input asp-for="Salary" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="DepartmentId">Department</label>
+                        <select asp-for="DepartmentId" asp-items="ViewBag.DepartmentList" class="form-control"></select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Assign Classes</label>
+                        <select asp-for="SelectedClassIds" asp-items="ViewBag.ClassList" class="form-control" multiple size="5">
+                        </select>
+                        <small class="form-text text-muted">Hold Ctrl (Windows) or Cmd (Mac) to select multiple.</small>
+                    </div>
+                }
+                else if (sectionName == "Contact")
+                {
+                    <div class="mb-3">
+                        <label asp-for="Email"></label>
+                        <input asp-for="Email" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="PhoneNo"></label>
+                        <input asp-for="PhoneNo" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Address"></label>
+                        <input asp-for="Address" class="form-control" />
+                    </div>
+                }
+                else if (sectionName == "Activity")
+                {
+                    <div class="mb-3">
+                        <label asp-for="Activity"></label>
+                        <textarea asp-for="Activity" class="form-control"></textarea>
+                    </div>
+                }
+                else
+                {
+                    <p>No editable fields available for this section.</p>
+                }
+
+                <button type="submit" class="btn btn-success">Save</button>
+                <a asp-action="Detail" asp-route-id="@Model.Id" class="btn btn-secondary">Back</a>
+            </form>
+        </div>
+    </div>
+</section>

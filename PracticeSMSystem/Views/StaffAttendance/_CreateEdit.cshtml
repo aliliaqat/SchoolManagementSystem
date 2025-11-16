@@ -1,0 +1,90 @@
+﻿@model PracticeSMSystem.Data.Models.StaffAttendance
+
+@{
+    var isEdit = (Model != null && Model.Id > 0);
+    var actionName = isEdit ? "Edit" : "Create";
+    var title = isEdit ? "Update Attendance" : "Add New Attendance Record";
+}
+
+<div class="modal-header bg-primary text-white">
+    <h4 class="modal-title">@title</h4>
+    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+</div>
+
+<form asp-controller="StaffAttendance" asp-action="@actionName" method="post" id="attendanceForm">
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="modal-body">
+
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <!-- Attendance Date -->
+        <div class="form-group">
+            <label asp-for="AttendanceDate">Attendance Date</label>
+            <input asp-for="AttendanceDate" type="datetime-local" class="form-control"
+                   value="@(Model.AttendanceDate == default(DateTime)
+                                               ? DateTime.Now.ToString("yyyy-MM-ddTHH:mm")
+                                               : Model.AttendanceDate.ToString("yyyy-MM-ddTHH:mm"))" />
+        </div>
+
+        <!-- Staff Dropdown (Create) / Readonly (Edit) -->
+        <div class="form-group">
+            <label>Staff</label>
+
+            @if (!isEdit)
+            {
+                <select asp-for="StaffId" class="form-control"
+                        asp-items="@(new SelectList(ViewBag.staff, "Id", "FullName"))">
+                    <option value="">-- Select Staff --</option>
+                </select>
+            }
+            else
+            {
+                <input class="form-control" value="@Model.Staff?.FullName" disabled />
+                <input type="hidden" asp-for="StaffId" />
+            }
+        </div>
+
+        <!-- Departments -->
+        <div class="form-group">
+            <label>Departments</label>
+            <select asp-for="DepartmentId" class="form-control"
+                    asp-items="@(new SelectList(ViewBag.Departments, "Id", "DName", Model.DepartmentId))">
+                <option value="">-- Select Departments --</option>
+            </select>
+        </div>
+
+        <!-- Attendance Status -->
+        <div class="form-group">
+            <label>Status</label>
+            <select asp-for="AttendanceStatus" class="form-control"
+                    asp-items="ViewBag.AttendanceStatus">
+                <option value="">-- Select Status --</option>
+            </select>
+        </div>
+
+        <!-- Remarks -->
+        <div class="form-group">
+            <label>Remarks</label>
+            <textarea asp-for="AttendanceRemarks" class="form-control"></textarea>
+        </div>
+
+        <!-- Updated On (only show in Edit) -->
+        @if (isEdit)
+        {
+            <div class="form-group">
+                <label asp-for="UpdatedOn">Updated On</label>
+                <input asp-for="UpdatedOn" type="date" class="form-control"
+                       value="@Model.UpdatedOn?.ToString("yyyy-MM-dd")" />
+            </div>
+        }
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary btn-sm">💾 Save</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+    </div>
+</form>

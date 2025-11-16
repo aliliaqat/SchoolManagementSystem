@@ -1,0 +1,218 @@
+﻿@model IEnumerable<PracticeSMSystem.Data.Models.StudentList>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var selectedId = ViewBag.SelectedStudentId as int?;
+    var guardianStudents = ViewBag.GuardianStudents as List<PracticeSMSystem.Data.Models.GuardianStudent>;
+}
+
+<section class="content-header" style="margin-top:0; padding-top:0;">
+    <h1>
+        <small>Record of Students</small>
+    </h1>
+
+    @if (ViewBag.ClassInfo != null)
+    {
+        var classInfo = ViewBag.ClassInfo;
+
+        <div class="alert alert-info" style="margin-top:2px; margin-bottom:0px; padding:6px 10px;">
+            <strong>Class:</strong> @classInfo.ClassRName
+            <span> | </span>
+            <strong>Session:</strong> @(classInfo.Session != null ? classInfo.Session.SessionName : "No Session")
+            <span> | </span>
+            <strong>Section:</strong> @(classInfo.Section != null ? classInfo.Section.SectionName : "No Section")
+        </div>
+    }
+
+</section>
+
+<section class="content">
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">Students List</h3>
+            <div class="box-tools">
+                <div class="d-flex gap-2">
+                    <a asp-action="ClassesList" asp-controller="Enrolement" class="btn btn-sm btn-success">Back to Class List</a>
+                   <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#studentModal" id="openStudentModal">Enrole</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Gender</th>
+                        <th>Date of Birth</th>
+                        <th>Admission Date</th>
+                        <th>Email</th>
+                        <th style="text-align:center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var stu in Model)
+                        {
+                            <tr>
+                                <td>@stu.FullName</td>
+                                <td>@stu.Gender</td>
+                                <td>@stu.DateOfBirth?.ToString("dd-MMM-yyyy")</td>
+                                <td>@stu.AdmissionDate?.ToString("dd-MMM-yyyy")</td>
+                                <td>@stu.Email</td>
+                                <td style="text-align:center">
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a href="#instructionModal_@stu.StudentId" data-toggle="modal" class="btn btn-sm btn-info">Instructions</a>
+                                        <a asp-action="Details" asp-controller="Student" asp-route-id="@stu.StudentId" class="btn btn-sm btn-primary">Details</a>
+                                        <a asp-action="StudentGuardian" asp-controller="Guardian" asp-route-studentId="@stu.StudentId" class="btn btn-sm btn-warning">Guardian</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            @await Html.PartialAsync("_InstructionModal", stu)
+                            @* Inline expand for selected student *@
+                            @if (selectedId != null && selectedId == stu.StudentId)
+                            {
+                                if (guardianStudents != null && guardianStudents.Any())
+                                {
+                                    <tr>
+                                        <td colspan="6" class="p-0">
+                                            @await Html.PartialAsync("_GuardianAndStudentsPartial", guardianStudents)
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="6" class="text-center text-muted">
+                                            No guardians found for this student.
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center">No student records found.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+@* Optional modal for enrollment (if applicable) *@
+@{
+    var newStudent = new PracticeSMSystem.Data.Models.Student
+    {
+        DateOfBirth = DateTime.Now,
+        AddmissionDate = DateTime.Now,
+        IsDeleted = false
+    };
+}
+@await Html.PartialAsync("_CreateModal", newStudent, ViewData)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* @model IEnumerable<PracticeSMSystem.Data.Models.StudentList>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var selectedId = ViewBag.SelectedStudentId as int?;
+    var guardianStudents = ViewBag.GuardianStudents as List<PracticeSMSystem.Data.Models.GuardianStudent>;
+}
+
+
+<section class="content-header">
+    <h1>
+        
+        <small>Record of Students</small>
+    </h1>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Students List</h3>
+                    <div class="box-tools">
+                        <div class="d-flex gap-2">
+                            <a asp-action="ClassesList" asp-controller="Enrolement" class="btn btn-sm btn-success">Back ClassList</a>
+                            <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#studentModal" data-classid="2"
+                                    data-sectionid="3"
+                                    id="openStudentModal">
+                                Enrole
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Gender</th>
+                                <th>Date Of Birth</th>
+                                <th>Addmission Date</th>
+                                <th>Email</th>
+                                <th style="text-align:center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Any())
+                            {
+                                foreach (var stu in Model)
+                                {
+                                    <tr>
+                                        <td>@stu.FullName</td>
+                                        <td>@stu.Gender</td>
+                                        <td>@stu.DateOfBirth</td>
+                                        <td>@stu.AdmissionDate?.ToString("dd-MMM-yyyy")</td>
+                                        <td>@stu.Email</td>
+                                        <td>
+                                            <div class="d-flex gap-1" style="text-align:center">
+                                                <a href="#instructionModal_@stu.StudentId" data-toggle="modal" class="btn btn-sm btn-info">Instructions</a>
+                                                <a asp-action="Details" asp-controller="Student" asp-route-id="@stu.StudentId" class="btn btn-sm btn-primary">Detail</a>
+                                                <a asp-action="List" asp-controller="Guardian" asp-route-id="@stu.StudentId" class="btn btn-sm btn-warning">Guardian</a>
+                                               
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @await Html.PartialAsync("_InstructionModal", stu)
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="6" class="text-center">No student records found.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@await Html.PartialAsync("_CreateModal", new PracticeSMSystem.Data.Models.Student(), ViewData)
+  
+  *@

@@ -1,0 +1,75 @@
+﻿@model PracticeSMSystem.Data.Models.ClassRoom
+@{
+    ViewData["Title"] = Model.Id == 0 ? "Create Class" : "Edit Class";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        Edit Class
+        <small>Preview</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/ClassRoom/Index">Class</a></li>
+    </ol>
+</section>
+<!-- Content Wrapper -->
+<section class="content">
+    <div class="box box-default">
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-8 offset-md-2 ">
+                    <form asp-controller="ClassRoom" asp-action="Edit" method="post">
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="mb-3">
+                            <label asp-for="ClassRName" class="form-label"></label>
+                            <input asp-for="ClassRName" class="form-control" required />
+                            <span asp-validation-for="ClassRName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label"></label>
+                            <input asp-for="Description" type="text" class="form-control" required />
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="DepartmentId" class="form-label">Department Session</label>
+                            <select asp-for="DepartmentId"
+                                    class="form-control"
+                                    asp-items="@(new SelectList(ViewBag.departmentlist, "Id", "DName", Model?.DepartmentId))">
+                                <option value="">-- No Parent Session --</option>
+                            </select>
+                            <span asp-validation-for="DepartmentId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3 form-group">
+                            <label asp-for="SessionId" class="form-label">Main Session</label>
+                            <select asp-for="SessionId" class="form-control select2" asp-items="@(new SelectList(ViewBag.sessionlist, "Id", "SessionName", Model?.SessionId))">
+                                <option value="">-- No Parent Session --</option>
+                            </select>
+                            <span asp-validation-for="SessionId" class="text-danger"></span>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="SelectedTeacherIds">Assign Teachers</label>
+                            <select id="SelectedTeacherIds" name="SelectedTeacherIds" multiple class="form-control" asp-items="ViewBag.teacherList">
+                            </select>
+                            <small class="text-muted">Hold Ctrl (Windows) or Cmd (Mac) to select multiple teachers.</small>
+                        </div>
+
+
+
+                        <button type="submit" class="btn btn-success">Save</button>
+                        <a asp-controller="ClassRoom" asp-action="Index" class="btn btn-secondary">Back</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+

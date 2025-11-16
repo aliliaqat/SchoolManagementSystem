@@ -1,0 +1,12 @@
+﻿
+@model PracticeSMSystem.Data.Models.Role
+
+<h2>Role Details</h2>
+
+<div>
+    <strong>Id:</strong> @Model.Id <br />
+    <strong>Name:</strong> @Model.RoleName <br />
+    <strong>Description:</strong> @Model.RoleDescription
+</div>
+
+<a href="@Url.Action("GetAll", "Role")">Back to List</a>

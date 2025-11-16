@@ -1,0 +1,55 @@
+﻿
+@model PracticeSMSystem.Data.Models.Department
+
+@{
+    ViewData["Title"] = Model.Id == 0 ? "Create Department" : "Edit Department";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Content Wrapper -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card shadow-lg rounded">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title">
+                            @(Model.Id == 0 ? "Create Department" : "Edit Department")
+                        </h3>
+                    </div>
+
+                    <div class="card-body">
+                        <form asp-controller="Department" asp-action="Edit" method="post">
+                            <input type="hidden" asp-for="Id" />
+
+                            <div class="mb-3">
+                                <label asp-for="DName" class="form-label"></label>
+                                <input asp-for="DName" class="form-control" required />
+                                <span asp-validation-for="DName" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="DDescription" class="form-label"></label>
+                                <textarea asp-for="DDescription" class="form-control" rows="3" required></textarea>
+                                <span asp-validation-for="DDescription" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="DepHeadId" class="form-label">Head of Department</label>
+                                <select asp-for="DepHeadId" class="form-control" asp-items="@(new SelectList(ViewBag.StaffList, "Id", "FullName", Model?.DepHeadId))">
+                                    <option value="">-- Select Head --</option>
+                                </select>
+                                <span asp-validation-for="DepHeadId" class="text-danger"></span>
+                            </div>
+
+                            <div class="mt-4">
+                                <button type="submit" class="btn btn-success">Save</button>
+                                <a asp-controller="Department" asp-action="Index" class="btn btn-secondary">Back</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

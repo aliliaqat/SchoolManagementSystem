@@ -1,0 +1,244 @@
+﻿@model PracticeSMSystem.Data.Models.Student
+@{
+    var sectionName = ViewBag.Section as string;
+}
+
+<section class="content-header">
+    <h1>Edit @sectionName Info</h1>
+</section>
+<section class="content">
+    <div class="box box-default">
+        <div class="box-body">
+            <form asp-action="Edit" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="section" value="@ViewBag.Section" />
+                <input type="hidden" asp-for="Id" />
+
+                @if (sectionName == "General")
+                {
+                    <div class="mb-3">
+                        <label asp-for="StudentFName" class="form-label"></label>
+                        <input asp-for="StudentFName" class="form-control" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="StudentLName" class="form-label"></label>
+                        <input asp-for="StudentLName" class="form-control" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Gender" class="form-label"></label>
+                        <select asp-for="Gender" class="form-control select2" asp-items="ViewBag.GenderList">
+                            <option value="">-- Select Gender --</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="DateOfBirth" class="form-label"></label>
+                        <input asp-for="DateOfBirth" type="date" class="form-control" />
+                    </div>
+                }
+                else if (sectionName == "Student")
+                {
+                    <div class="mb-3">
+                        <label asp-for="FullName"></label>
+                        <input asp-for="FullName" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="AddmissionDate"></label>
+                        <input asp-for="AddmissionDate" type="date" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Status"></label>
+                        <input asp-for="Status" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="SpecialInstruction"></label>
+                        <input asp-for="SpecialInstruction" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="ClassRoomId">ClassRoom</label>
+                        <select asp-for="ClassRoomId" asp-items="ViewBag.classlist" class="form-control"></select>
+                    </div>
+                }
+                else if (sectionName == "Contact")
+                {
+                    <div class="mb-3">
+                        <label asp-for="Email"></label>
+                        <input asp-for="Email" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="PhoneNo"></label>
+                        <input asp-for="PhoneNo" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Address"></label>
+                        <input asp-for="Address" class="form-control" />
+                    </div>
+                }
+                else if (sectionName == "Activity")
+                {
+                    <div class="mb-3">
+                        <label asp-for="Activity"></label>
+                        <input asp-for="Activity" class="form-control" />
+                        <span asp-validation-for="Activity" class="text-danger"></span>
+                    </div>
+                }
+                else
+                {
+                    <p>No editable fields available for this section.</p>
+                }
+
+                <button type="submit" class="btn btn-success">Save</button>
+                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">Back</a>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* @model PracticeSMSystem.Data.Models.Student
+@{
+    ViewData["Title"] = "Edit Student";
+}
+
+<section class="content-header">
+    <h2>Edit Student: <span class="text-primary">@Model.FullName</span></h2>
+</section>
+
+<ul class="nav nav-tabs" id="editTab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#General">General Info</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#Student">Student Info</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#Contact">Contact Info</a>
+    </li>
+</ul>
+
+<form asp-action="Edit" method="post" class="mt-3">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+
+    <div class="tab-content">
+
+        <!-- General Tab -->
+        <div id="General" class="tab-pane fade show active">
+            <input type="hidden" name="section" value="General" />
+
+            <div class="mb-3">
+                <label asp-for="StudentFName">First Name</label>
+                <input asp-for="StudentFName" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="StudentLName">Last Name</label>
+                <input asp-for="StudentLName" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Gender">Gender</label>
+                <select asp-for="Gender" asp-items="ViewBag.GenderList" class="form-control"></select>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DateOfBirth">Date of Birth</label>
+                <input asp-for="DateOfBirth" type="date" class="form-control" />
+            </div>
+        </div>
+
+        <!-- Student Tab -->
+        <div id="Student" class="tab-pane fade">
+            <input type="hidden" name="section" value="Student" />
+
+            <div class="mb-3">
+                <label asp-for="Status"></label>
+                <input asp-for="Status" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="SpecialInstruction"></label>
+                <input asp-for="SpecialInstruction" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ClassRoomId">ClassRoom</label>
+                <select asp-for="ClassRoomId" asp-items="ViewBag.classlist" class="form-control"></select>
+            </div>
+        </div>
+
+        <!-- Contact Tab -->
+        <div id="Contact" class="tab-pane fade">
+            <input type="hidden" name="section" value="Contact" />
+
+            <div class="mb-3">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="PhoneNo"></label>
+                <input asp-for="PhoneNo" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Address"></label>
+                <input asp-for="Address" class="form-control" />
+            </div>
+        </div>
+
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">Cancel</a>
+
+</form>
+
+<script>
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        localStorage.setItem('activeEditTab', $(e.target).attr('href'));
+    });
+
+    var activeEditTab = localStorage.getItem('activeEditTab');
+    if (activeEditTab) {
+        $('#editTab a[href="' + activeEditTab + '"]').tab('show');
+    }
+</script>
+ *@

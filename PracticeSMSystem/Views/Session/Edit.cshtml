@@ -1,0 +1,61 @@
+﻿@model PracticeSMSystem.Data.Models.Session
+@{
+    ViewData["Title"] = Model.Id == 0 ? "Create Session" : "Edit Session";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- Content Wrapper -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="col-md-8 offset-md-2">
+            <h2>@(Model.Id == 0 ? "Create Session" : "Edit Session")</h2>
+
+            <form asp-controller="Session" asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-3">
+                    <label asp-for="SessionName" class="form-label"></label>
+                    <input asp-for="SessionName" class="form-control" required />
+                    <span asp-validation-for="SessionName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="StartDate" class="form-label"></label>
+                    <input asp-for="StartDate" type="date" class="form-control" required />
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="EnDate" class="form-label"></label>
+                    <input asp-for="EnDate" type="date" class="form-control" required />
+                    <span asp-validation-for="EnDate" class="text-danger"></span>
+                </div>
+
+                @* <div class="mb-3">
+                    <label asp-for="MainSessionId" class="form-label">Main Session</label>
+                    <select asp-for="MainSessionId"
+                            class="form-control"
+                            asp-items="@(new SelectList(ViewBag.SessionList, "Id", "SessionName", Model.MainSessionId))">
+                        <option value="">-- Select Main Session --</option>
+                    </select>
+                    <span asp-validation-for="MainSessionId" class="text-danger"></span>
+                </div> *@
+                <div class="mb-3">
+                    <label class="form-label">Assign ClassRooms</label>
+                    <select asp-for="SelectedClassRoomIds"
+                            asp-items="@(new SelectList(ViewBag.ClassRList, "Id", "ClassRName", Model.SelectedClassRoomIds))"
+                            class="form-control"
+                            multiple="multiple">
+                    </select>
+                    <span asp-validation-for="SelectedClassRoomIds" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-success">Save</button>
+                <a asp-controller="Session" asp-action="Index" class="btn btn-secondary">Back</a>
+            </form>
+        </div>
+    </div>
+</section>
+
+

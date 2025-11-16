@@ -1,0 +1,136 @@
+﻿@model IEnumerable<PracticeSMSystem.Data.Models.Subject>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        Subject
+        <small>Directory</small>
+    </h1>
+    
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Subject List</h3>
+                    <div class="box-tools">
+                        <div class="input-group">
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                                Add new Subject
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>Subject Name</th>
+                            <th>Subject Code</th>
+                            <th>Created On</th>
+                            <th>Updated On</th>
+                            <th>ClassRoom</th>
+                            <th>Department</th>
+                            <th>Teacher</th>
+                            <th style="text-align:center">Actions</th>
+                        </tr>
+
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var sub in Model)
+                            {
+                                <tr>
+                                    <td>@sub.SubjectName</td>
+                                    <td>@sub.SubjectCode</td>
+                                    <td>@(sub.CreatedOn?.ToString("dd-MMM-yyyy"))</td>
+                                    <td>@(sub.UpdatedOn?.ToString("dd-MMM-yyyy"))</td>
+                                    <td>@sub.ClassRoom?.ClassRName</td>
+                                    <td>@sub.Department?.DName</td>
+                                    <td>@($"{sub.Teacher?.TFirstName} {sub.Teacher?.TLastName}")</td>
+                                    <td style="text-align:center">
+                                        <a href="@Url.Action("Edit", "Subject", new { id = sub.Id })" class="btn btn-warning btn-sm">Edit</a>
+                                        <a href="@Url.Action("Details", "Subject", new { id = sub.Id })" class="btn btn-info btn-sm">Details</a>
+                                        <a href="@Url.Action("Delete", "Subject", new { id = sub.Id })" class="btn btn-danger btn-sm">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="11" class="text-center">No Subject records found.</td>
+                            </tr>
+                        }
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ✅ Modal with Form -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form asp-controller="Subject" asp-action="Create" method="post" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Add Subject</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group has-feedback">
+                    <input type="text" class="form-control" placeholder="Subject Name" name="SubjectName" required>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="text" class="form-control" placeholder="Subject Code" name="SubjectCode" required>
+                </div>
+
+                <div class="form-group">
+                    <select class="form-control" id="DepartmentId" name="DepartmentId">
+                        <option value="">-- Select Department --</option>
+                        @foreach (var dep in ViewBag.departmentlist as List<PracticeSMSystem.Data.Models.Department>)
+                        {
+                            <option value="@dep.Id">@dep.DName</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <select class="form-control" id="ClassRoomId" name="ClassRoomId">
+                        <option value="">-- Select Class --</option>
+                        @foreach (var cls in ViewBag.classlist as List<PracticeSMSystem.Data.Models.ClassRoom>)
+                        {
+                            <option value="@cls.Id">@cls.ClassRName</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <select class="form-control" id="TeacherId" name="TeacherId">
+                        <option value="">-- Select Teacher --</option>
+                        @foreach (var tec in ViewBag.teacherlist as List<PracticeSMSystem.Data.Models.Teacher>)
+                        {
+                            <option value="@tec.Id">@tec.TFirstName @tec.TLastName</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+

@@ -1,0 +1,53 @@
+﻿@model PracticeSMSystem.Data.Models.Attendance
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="detailContainer">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-primary shadow-lg">
+                <div class="card-header bg-aqua-gradient text-white">
+                    <h2 class="mb-3">Attendance Details</h2>
+                </div>
+                <div class="card shadow-lg rounded">
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-3">Student ID</dt>
+                            <dd class="col-sm-9">@Model.StudentId</dd>
+
+                            <dt class="col-sm-3">Name</dt>
+                            <dd class="col-sm-9">@Model.Student?.FullName</dd>
+
+                            <dt class="col-sm-3">Class</dt>
+                            <dd class="col-sm-9">@Model.ClassRoom?.ClassRName</dd>
+
+                            <dt class="col-sm-3">Section</dt>
+                            <dd class="col-sm-9">@Model.Section?.SectionName</dd>
+
+                            <dt class="col-sm-3">Subject</dt>
+                            <dd class="col-sm-9">@Model.Subject?.SubjectName</dd>
+
+                            <dt class="col-sm-3">Attendance Date</dt>
+                            <dd class="col-sm-9">@Model.AttendanceDate.ToString("dd-MMM-yyyy")</dd>
+
+                            <dt class="col-sm-3">Status</dt>
+                            <dd class="col-sm-9">@Model.AttendanceStatus</dd>
+
+                            <dt class="col-sm-3">Remarks</dt>
+                            <dd class="col-sm-9">@Model.AttendanceRemarks</dd>
+
+                            <dt class="col-sm-3">Updated At</dt>
+                            <dd class="col-sm-9">@Model.UpdatedAt?.ToString("dd-MMM-yyyy hh:mm tt")</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-3">
+            <button class="btn btn-sm btn-success" onclick="openModal('/Attendance/Edit/@Model.Id')">Edit</button>
+            <a asp-action="AttendanceList" class="btn btn-secondary">Back to List</a>
+        </div>
+    </section>
+</div>

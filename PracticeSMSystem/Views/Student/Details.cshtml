@@ -1,0 +1,143 @@
+﻿@model PracticeSMSystem.Data.Models.Student
+@{
+    ViewData["Title"] = "Student Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    // bool showDetails = ViewBag.ShowDetails != null && (bool)ViewBag.ShowDetails;
+    var sectionName = ViewBag.Section as string;
+}
+
+<section class="content-header" style="margin:0; padding:5px 10px;">
+    <h2 style="margin:0; padding:0; line-height:1;">
+        student Details
+        @* Student Name: <span class="text-primary">@Model.FullName</span> *@
+        <a asp-action="StudentList" asp-controller="Student" asp-route-classId="@Model.ClassRoomId" class="btn btn-sm btn-success" style="position:absolute; top:2px; right:0;">Back to Student List</a>
+    </h2>
+</section>
+<section class="content mt-3">
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs id=studentTab">
+            <li class="active"><a href="#General" data-toggle="tab">General Info</a></li>
+            <li><a href="#Student" data-toggle="tab">Student Info</a></li>
+            <li><a href="#Contact" data-toggle="tab">Contact Info</a></li>
+            <li><a href="#Activity" data-toggle="tab">Activity</a></li>
+            <li class="pull-right header"><i class="fa fa-user"></i> Student Profile</li>
+        </ul>
+
+        <div class="tab-content">
+
+            <!-- General Info Tab -->
+            <div class="tab-pane active" id="General">
+                <div class="box box-primary shadow-lg" style="margin-top:15px;">
+                    <div class="box-header with-border bg-aqua-gradient text-white">
+                        <h3 class="box-title">General Info</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-sm-3 font-weight-bold">Name</div>
+                            <div class="col-sm-9">@Model.FullName</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-3 font-weight-bold">Gender</div>
+                            <div class="col-sm-9">@Model.Gender</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-3 font-weight-bold">Date of Birth</div>
+                            <div class="col-sm-9">@Model.DateOfBirth.ToString("dd-MMM-yyyy")</div>
+                        </div>
+                    </div>
+                    <div class="text-left box-footer" style="margin-top: 20px;">
+                        <a asp-action="Edit" asp-controller="Student" asp-route-id="@Model.Id" asp-route-section="General" class="btn btn-warning btn-sm">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student Info Tab -->
+            <div class="tab-pane" id="Student">
+                <div class="box box-primary shadow-lg" style="margin-top:15px;">
+                    <div class="box-header with-border bg-aqua-gradient text-white">
+                        <h3 class="box-title">Student Info</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-sm-3 font-weight-bold">SName</div>
+                            <div class="col-sm-9">@Model.FullName</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-3 font-weight-bold">Class</div>
+                            <div class="col-sm-9">@Model.ClassRoom?.ClassRName</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-3 font-weight-bold">Admission Date</div>
+                            <div class="col-sm-9">@Model.AddmissionDate.ToString("dd-MMM-yyyy")</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-3 font-weight-bold">Status</div>
+                            <div class="col-sm-9">@Model.Status</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-3 font-weight-bold">Special Instruction</div>
+                            <div class="col-sm-9">@Model.SpecialInstruction</div>
+                        </div>
+                    </div>
+                    <div class="text-left box-footer" style="margin-top: 20px">
+                        <a asp-action="Edit" asp-controller="Student" asp-route-id="@Model.Id" asp-route-section="Student" class="btn btn-warning btn-sm">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Info Tab -->
+            <div class="tab-pane" id="Contact">
+                <div class="box box-primary shadow-lg" style="margin-top:15px;">
+                    <div class="box-header with-border bg-aqua-gradient text-white">
+                        <h3 class="box-title">Contact Info</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-sm-3 font-weight-bold">Email</div>
+                            <div class="col-sm-9">@Model.Email</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-3 font-weight-bold">Phone</div>
+                            <div class="col-sm-9">@Model.PhoneNo</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-3 font-weight-bold">Address</div>
+                            <div class="col-sm-9">@Model.Address</div>
+                        </div>
+                    </div>
+                    <div class="text-left box-footer" style="margin-top: 20px">
+                        <a asp-action="Edit" asp-controller="Student" asp-route-id="@Model.Id" asp-route-section="Contact" class="btn btn-warning btn-sm">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Tab -->
+            <div class="tab-pane" id="Activity">
+                <div class="box box-primary shadow-lg" style="margin-top:15px;">
+                    <div class="box-header with-border bg-aqua-gradient text-white">
+                        <h3 class="box-title">Activity</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-sm-2 font-weight-bold">Activity</div>
+                            <div class="col-sm-4">@Model.Activity</div>
+                        </div>
+                    </div>
+                    <div class="text-left box-footer " style="margin-top: 20px">
+                        <a asp-action="Edit" asp-controller="Student" asp-route-id="@Model.Id" asp-route-section="Activity" class="btn btn-warning btn-sm">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+

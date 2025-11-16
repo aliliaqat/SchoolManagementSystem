@@ -1,0 +1,147 @@
+﻿@model PracticeSMSystem.Data.Models.Guardian
+
+@{
+    ViewBag.Title = "Edit Guardian";
+}
+
+<section class="content-header">
+    <h2>Edit Guardian Information</h2>
+</section>
+
+<section class="content">
+    <div class="box box-default">
+        <div class="box-body">
+            <form asp-action="Edit" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+
+                <div class="form-group mb-3">
+                    <label asp-for="GFirstName"></label>
+                    <input asp-for="GFirstName" class="form-control" required />
+                    <span asp-validation-for="GFirstName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="GLastName"></label>
+                    <input asp-for="GLastName" class="form-control" required />
+                    <span asp-validation-for="GLastName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="GRelationship">Relationship</label>
+                    <input asp-for="GRelationship" class="form-control" />
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="GPhone">Phone</label>
+                    <input asp-for="GPhone" class="form-control" required />
+                    <span asp-validation-for="GPhone" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="GEmail">Email</label>
+                    <input asp-for="GEmail" type="email" class="form-control" required />
+                    <span asp-validation-for="GEmail" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="GAddress">Address</label>
+                    <input asp-for="GAddress" class="form-control" required />
+                    <span asp-validation-for="GAddress" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="SelectedStudentIds">Select Students</label>
+                    <select asp-for="SelectedStudentIds" asp-items="@(new MultiSelectList(ViewBag.StudentList, "Id", "StudentFName", Model.SelectedStudentIds))" class="form-control" multiple="multiple"></select>
+                    <span asp-validation-for="SelectedStudentIds" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-success">Update</button>
+                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">Back</a>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+ *@
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+یہ جادو کی چھڑی ہے front-end validation کے لیے ✅
+
+یہ کیا کرتا ہے؟ 😎
+✅ Client-Side Validation enable کرتا ہے جیسے:
+
+• Required field میں کچھ نہ لکھو تو فوراً error دکھا دے
+• Email غلط لکھو تو warning آ جائے
+• Phone format غلط ہو تو شکوہ کر دے
+• بغیر refresh کے errors show ہوں
+
+یعنی:
+
+User غلطی کرے۔
+Form reload نہ ہو۔
+Error screen پر فوراً پاپوم! 🎯
+
+یہ کون سی scripts لوڈ کرتا ہے؟
+یہ partial View اندر سے یہ اہم JS files import کرتا ہے:
+
+✔ jQuery
+✔ jQuery Validate
+✔ jQuery Unobtrusive Validate
+
+یہی تینوں client-side validation کو زندہ رکھتے ہیں ✌️
+
+اگر یہ نہ ہو؟
+• Validation صرف server-side ہو گی
+• غلطی پر page reload ہو گا
+• User experience برباد ہو جاتا ہے 🥲
+• Required field خالی چھوڑ دو، کوئی warning نہیں ملے گی
+
+ *@

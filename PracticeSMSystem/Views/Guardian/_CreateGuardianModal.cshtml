@@ -1,0 +1,76 @@
+﻿@model PracticeSMSystem.Data.Models.Guardian
+
+@{
+    bool showStudentDropdown = ViewData["ShowStudentDropdown"] as bool? ?? false;
+    string modalTitle = showStudentDropdown ? "Add Guardian" : "Attach Guardian";
+}
+
+<div class="modal fade" id="guardianModal" tabindex="-1" role="dialog" aria-labelledby="guardianModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <form asp-controller="Guardian" asp-action="Create" method="post" class="modal-content">
+            <input type="hidden" name="StudentId" value="@ViewBag.SelectedStudentId" />
+            @Html.AntiForgeryToken()
+
+            <div class="modal-header bg-primary text-white">
+                <h4 class="modal-title" id="guardianModalLabel">@modalTitle</h4>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>First Name</label>
+                    <input asp-for="GFirstName" class="form-control" required />
+                </div>
+
+                <div class="form-group">
+                    <label>Last Name</label>
+                    <input asp-for="GLastName" class="form-control" required />
+                </div>
+
+                <div class="form-group">
+                    <label>Address</label>
+                    <input asp-for="GAddress" class="form-control" required />
+                </div>
+
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input asp-for="GPhone" class="form-control" required />
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input asp-for="GEmail" class="form-control" type="email" required />
+                </div>
+
+                @if (!showStudentDropdown)
+                {
+                    <div class="form-group">
+                        <label>Relationship</label>
+                        <input name="Relationship" class="form-control" placeholder="e.g. Father, Mother, Uncle" />
+                    </div>
+                }
+
+                @if (showStudentDropdown)
+                {
+                    <div class="form-group">
+                        <label for="SelectedStudentIds">Select Student</label>
+                        <select class="form-control" id="SelectedStudentIds" name="SelectedStudentIds">
+                            <option value="">-- Select Student --</option>
+                            @foreach (var student in ViewBag.StudentList as List<PracticeSMSystem.Data.Models.Student>)
+                            {
+                                <option value="@student.Id">@student.FullName</option>
+                            }
+                        </select>
+                    </div>
+                }
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </form>
+    </div>
+</div>
