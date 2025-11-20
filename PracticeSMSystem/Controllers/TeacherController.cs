@@ -192,5 +192,10 @@ public class TeacherController : Controller
        
         return PartialView("TeacherList", teacherList);
     }
+
+    public IActionResult TeasData()
+    {
+        return View();
+    }
 }
 
