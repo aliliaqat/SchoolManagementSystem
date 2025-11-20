@@ -50,7 +50,11 @@ public class AccountController : Controller
         return RedirectToAction("Login", "Account");
     }
     public IActionResult GetDataFromDb()
-    { return View(); }
+    {
+        return View();
+    }
+
+   
 }
 
 
