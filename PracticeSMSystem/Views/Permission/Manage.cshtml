@@ -1,4 +1,4 @@
-﻿@using PracticeSMSystem.Data.Models
+﻿@*  @using PracticeSMSystem.Data.Models
 @model Role
 
 @{
@@ -68,58 +68,33 @@ else
         <a href="@Url.Action("GetAll", "Role")">Back to List</a>
     </form>
 }
+ *@
 
 
+@*  -----------------------------------------------------------------------------------------------------------------
+ *@
+@*                         ✅ 4. Final Updated Manage.cshtml (Checkbox-based multi permissions) *@
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@* @model PracticeSMSystem.Data.Models.Role
+@using PracticeSMSystem.Data.Enums
+@using PracticeSMSystem.Data.Models
+@model Role
 
 @{
-    // ViewBag.Roles ko list mein cast kar lein (null-safe)
-    var roles = ViewBag.Roles as List<PracticeSMSystem.Data.Models.Role> ?? new List<PracticeSMSystem.Data.Models.Role>();
+    var roles = ViewBag.Roles as List<Role> ?? new();
     var currentRoleId = Model?.Id ?? 0;
+
+    var permissionOptions = Enum.GetValues(typeof(AccessLevel))
+                                .Cast<AccessLevel>()
+                                .Where(x => x != AccessLevel.None)
+                                .ToList();
 }
 
-<!-- Role Select Dropdown -->
-<form method="get" asp-action="Manage">
+<form method="get" asp-action="Manage" class="mb-4">
     <select name="roleId" class="form-control" onchange="this.form.submit()">
         <option value="">-- Select Role --</option>
         @foreach (var item in roles)
         {
-            // Note: selected attribute set conditionally using @( ... ? "selected" : null )
             <option value="@item.Id" selected="@(item.Id == currentRoleId ? "selected" : null)">
                 @item.RoleName
             </option>
@@ -127,69 +102,59 @@ else
     </select>
 </form>
 
-<br />
-
 @if (Model == null)
 {
     <div class="alert alert-info">Please select a role to manage permissions.</div>
 }
 else
 {
-    <section class="content-header" style="margin-top:0; padding-top:0;">
-        <h1>
-            <small>Manage Permissions for <strong>@Model.RoleName</strong></small>
-        </h1>
+    <h4 class="mb-3">Manage Permissions for <strong>@Model.RoleName</strong></h4>
 
-        @if (TempData["Message"] != null)
-        {
-            <div class="alert alert-success" style="margin-top:10px;">
-                @TempData["Message"]
-            </div>
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">@TempData["Message"]</div>
+    }
+
+    <form asp-action="UpdatePermissions" method="post">
+        <input type="hidden" name="Id" value="@Model.Id" />
+
+        @{
+            var permissions = Model.Permissions.ToList();
         }
-    </section>
 
-    <section class="content">
-        <div class="box">
-            <div class="box-header">
-                <h3 class="box-title">Permission Manager</h3>
-            </div>
+        <table class="table table-bordered table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>Feature</th>
+                    @foreach (var opt in permissionOptions)
+                    {
+                        <th>@opt</th>
+                    }
+                </tr>
+            </thead>
 
-            <div class="box-body table-responsive no-padding">
-                <form asp-action="UpdatePermissions" method="post">
-                    <input type="hidden" name="roleId" value="@Model.Id" />
+            <tbody>
+                @for (int i = 0; i < permissions.Count; i++)
+                {
+                    <tr>
+                        <td>@permissions[i].Feature?.Name</td>
 
-                    <table class="table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th>Feature</th>
-                                <th>No Access</th>
-                                <th>View</th>
-                                <th>Add</th>
-                                <th>Edit</th>
-                                <th>Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var permission in Model.Permissions)
-                            {
-                                <tr>
-                                    <td>@permission.Feature?.Name</td>
-                                    <td><input type="radio" name="permission_@permission.Id" value="0" @(permission.AccessLevel == 0 ? "checked" : "") /></td>
-                                    <td><input type="radio" name="permission_@permission.Id" value="1" @(permission.AccessLevel == 1 ? "checked" : "") /></td>
-                                    <td><input type="radio" name="permission_@permission.Id" value="2" @(permission.AccessLevel == 2 ? "checked" : "") /></td>
-                                    <td><input type="radio" name="permission_@permission.Id" value="3" @(permission.AccessLevel == 3 ? "checked" : "") /></td>
-                                    <td><input type="radio" name="permission_@permission.Id" value="4" @(permission.AccessLevel == 4 ? "checked" : "") /></td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                        <input type="hidden" name="Permissions[@i].Id" value="@permissions[i].Id" />
 
-                    <div class="box-footer">
-                        <button type="submit" class="btn btn-success">Save Changes</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </section>
+                        @foreach (var opt in permissionOptions)
+                        {
+                            <td>
+                                <input type="checkbox"
+                                       name="Permissions[@i].SelectedLevels"
+                                       value="@(Convert.ToInt32(opt))"
+                                       @(permissions[i].AccessLevel.HasFlag(opt) ? "checked" : "") />
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <button type="submit" class="btn btn-success">💾 Save Changes</button>
+    </form>
 }
- *@

@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using PracticeSMSystem.Data.Enums;
+using PracticeNewSms.Filters;
 using PracticeSMSystem.Data.Database;
 using PracticeSMSystem.Data.Models;
 namespace PracticeNewSms.Controllers;
@@ -13,14 +16,17 @@ public class DepartmentController : Controller
     {
         _context = context;
     }
+
+    [FeaturePermission("Department", AccessLevel.View)]
     public IActionResult Index()
     {
-        var departments = _context.Departments.Include(d => d.Head).Where(d => !d.IsDeleted).ToList();
+        var departments = _context.Departments.Include(d => d.Head).Where(d => !d.IsDeleted);
 
         ViewBag.StaffList = _context.Staff.Where(s => !s.IsDeleted).ToList();
         return View(departments);
     }
 
+    [FeaturePermission("Department", AccessLevel.Details)]
     public IActionResult Details(int id)
     {
         //ViewBag.StaffList = _context.Staff.Where(s => !s.IsDeleted).ToList();
@@ -35,6 +41,8 @@ public class DepartmentController : Controller
         return View (department);
     }
 
+
+    [FeaturePermission("Department", AccessLevel.Create)]
     [HttpGet]
     public IActionResult Create()
     {
@@ -43,6 +51,8 @@ public class DepartmentController : Controller
         return View();
     }
 
+
+    [FeaturePermission("Department", AccessLevel.Create)]
     [HttpPost]
     public IActionResult Create(Department department)
     {
@@ -64,6 +74,7 @@ public class DepartmentController : Controller
         return View(nameof(Index));
     }
 
+    [FeaturePermission("Department", AccessLevel.Edit)]
     [HttpGet]
     public IActionResult Edit(int id)
     {
@@ -86,6 +97,8 @@ public class DepartmentController : Controller
         return View(department);
     }
 
+
+    [FeaturePermission("Department", AccessLevel.Edit)]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Edit(Department department)
@@ -113,6 +126,8 @@ public class DepartmentController : Controller
         return RedirectToAction("Index");
     }
 
+
+    [FeaturePermission("Department", AccessLevel.Delete)]
     [HttpGet]
     public IActionResult Delete(int id)
     {
@@ -126,6 +141,8 @@ public class DepartmentController : Controller
         return View(department);
     }
 
+
+    [FeaturePermission("Department", AccessLevel.Delete)]
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public IActionResult DeleteConfirmed(int id)

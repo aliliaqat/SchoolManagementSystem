@@ -29,7 +29,7 @@ namespace PracticeSMSystem.Data.Models
         public bool? Status { get; set; } = true;
 
         public List<UserAccount>? UserAccount { get; set; }
-        public List<Permission>? Permissions { get; set; }
+        public List<Permissions>? Permissions { get; set; }
     }
 
 }

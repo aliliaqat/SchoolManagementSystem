@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using PracticeSMSystem.Data.Enums;
+using PracticeNewSms.Filters;
 using PracticeSMSystem.Data.Database;
 using PracticeSMSystem.Data.Models;
 
 namespace PracticeNewSms.Controllers;
+
 
 public class SessionController : Controller
 {
@@ -15,6 +19,7 @@ public class SessionController : Controller
         _context = context;
     }
 
+    [FeaturePermission("Session", AccessLevel.View)]
     public IActionResult Index()
     {
         var session = _context.Sessions.Include(s => s.classroom).Where(s => !s.IsDeleted).ToList();
@@ -23,6 +28,8 @@ public class SessionController : Controller
         return View(session);
     }
 
+
+    [FeaturePermission("Session", AccessLevel.Details)]
     public IActionResult Details(int Id)
     {
         var session = _context.Sessions.Include(s => s.classroom).FirstOrDefault(s => s.Id == Id && !s.IsDeleted);
@@ -37,6 +44,7 @@ public class SessionController : Controller
         return View(session);
     }
 
+    [FeaturePermission("Session", AccessLevel.Create)]
     [HttpGet]
     public IActionResult Create()
     {
@@ -44,6 +52,8 @@ public class SessionController : Controller
         return View();
     }
 
+
+    [FeaturePermission("Session", AccessLevel.Create)]
     [HttpPost]
     public IActionResult Create(Session session)
     {
@@ -84,6 +94,8 @@ public class SessionController : Controller
         return View(session);
     }
 
+
+    [FeaturePermission("Session", AccessLevel.Edit)]
     [HttpGet]
     public IActionResult Edit(int id)
     {
@@ -115,7 +127,7 @@ public class SessionController : Controller
     }
 
 
-
+    [FeaturePermission("Session", AccessLevel.Edit)]
     [HttpPost]
     public IActionResult Edit(Session session)
     {
@@ -161,7 +173,7 @@ public class SessionController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-
+    [FeaturePermission("Session", AccessLevel.Delete)]
     [HttpGet]
     public IActionResult Delete(int id)
     {
@@ -176,6 +188,7 @@ public class SessionController : Controller
     }
 
 
+    [FeaturePermission("Session", AccessLevel.Delete)]
     [HttpPost, ActionName("Delete")]
     public IActionResult DeleteConfirmed(int id)
     {

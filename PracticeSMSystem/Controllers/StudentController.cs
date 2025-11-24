@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using PracticeSMSystem.Data.Enums;
+using PracticeNewSms.Filters;
 using PracticeSMSystem.Data;
 using PracticeSMSystem.Data.Database;
 using PracticeSMSystem.Data.Models;
@@ -31,6 +34,9 @@ public class StudentController : Controller
 
     //    return View(students);
     //}
+
+
+    [FeaturePermission("Student", AccessLevel.View)]
     public IActionResult StudentList(int? classId = null)
     {
         object? classInfo = null;
@@ -59,6 +65,7 @@ public class StudentController : Controller
     }
 
 
+    [FeaturePermission("Student", AccessLevel.Details)]
     public IActionResult Details(int id, string section)
     {
         var student = _context.Students.Include(s => s.ClassRoom).FirstOrDefault(s => s.Id == id && s.IsDeleted != true);
@@ -76,11 +83,11 @@ public class StudentController : Controller
     }
 
 
-
+    [FeaturePermission("Student", AccessLevel.Create)]
     [HttpGet]
     public IActionResult Create()
     {
-        ViewBag.ClassList = new SelectList(_context.classroom, "ClassRoomId", "ClassName");
+        ViewBag.ClassList = new SelectList(_context.classroom, "ClassRoomId", "ClassRName");
         ViewBag.SectionList = new SelectList(_context.sections, "SectionId", "SectionName");
 
         var model = new Student
@@ -93,6 +100,9 @@ public class StudentController : Controller
         return PartialView("_CreateModal", model);
     }
 
+
+
+    [FeaturePermission("Student", AccessLevel.Create)]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Create(Student student)
@@ -110,6 +120,8 @@ public class StudentController : Controller
     }
 
 
+
+    [FeaturePermission("Student", AccessLevel.Edit)]
     [HttpGet]
     public IActionResult Edit(int id, string section)
     {
@@ -128,6 +140,7 @@ public class StudentController : Controller
     }
 
 
+    [FeaturePermission("Student", AccessLevel.Edit)]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Edit(Student student, string section)
@@ -137,8 +150,6 @@ public class StudentController : Controller
         {
             return NotFound();
         }
-
-        // 🔹 Section کے مطابق متعلقہ فیلڈز اپڈیٹ کریں
         switch (section)
         {
             case "General":
@@ -174,7 +185,7 @@ public class StudentController : Controller
     }
 
 
-
+    [FeaturePermission("Student", AccessLevel.Save)]
     [HttpPost]
     public IActionResult SaveInstruction(int StudentId, string InstructionText)
     {
@@ -193,7 +204,7 @@ public class StudentController : Controller
 
 
 
-
+    [FeaturePermission("Student", AccessLevel.Delete)]
     [HttpGet]
     public IActionResult Delete(int id)
     {
@@ -207,6 +218,8 @@ public class StudentController : Controller
         return View(student);
     }
 
+
+    [FeaturePermission("Student", AccessLevel.Delete)]
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public IActionResult DeleteConfirmed(int id)
@@ -219,8 +232,6 @@ public class StudentController : Controller
         }
 
         student.IsDeleted = true;
-
-
 
         _context.SaveChanges();
 

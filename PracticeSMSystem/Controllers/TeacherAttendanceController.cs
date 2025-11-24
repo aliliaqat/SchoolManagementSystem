@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using NuGet.DependencyResolver;
+using PracticeSMSystem.Data.Enums;
+using PracticeNewSms.Filters;
 using PracticeSMSystem.Data.Database;
 using PracticeSMSystem.Data.Models;
 using System.Collections.Generic;
-using Microsoft.Data.SqlClient;
 
 
 namespace PracticeNewSms.Controllers;
@@ -19,6 +22,8 @@ public class TeacherAttendanceController : Controller
         _context = context;
     }
 
+
+    [FeaturePermission("TeacherAttendance", AccessLevel.View)]
     public IActionResult TeacherAttendanceList(int? TeacherId, int? DepartmentId, int? ClassRoomId)
     {
 
@@ -32,8 +37,10 @@ public class TeacherAttendanceController : Controller
         return View(attendancelist);
     }
 
+
+    [FeaturePermission("TeacherAttendance", AccessLevel.Details)]
     [HttpGet]
-    public IActionResult Detail(int Id)
+    public IActionResult Details(int Id)
     {
         var teacherattendance = _context.teacherAttendances.Include(a => a.ClassRoom).Include(a => a.Teacher).Include(a => a.Department).FirstOrDefault(a => a.Id == Id && a.IsDeleted == false);
 
@@ -44,6 +51,8 @@ public class TeacherAttendanceController : Controller
         return View(teacherattendance);
     }
 
+
+    [FeaturePermission("TeacherAttendance", AccessLevel.Create)]
     [HttpGet]
     public IActionResult Create()
     {
@@ -69,6 +78,7 @@ public class TeacherAttendanceController : Controller
 
 
 
+    [FeaturePermission("TeacherAttendance", AccessLevel.Create)]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Create(TeacherAttendance teacherAttendance)
@@ -92,6 +102,8 @@ public class TeacherAttendanceController : Controller
         return Json(new { success = false, message = "Validation Fail", errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
     }
 
+
+    [FeaturePermission("TeacherAttendance", AccessLevel.Edit)]
     [HttpGet]
     public IActionResult Edit(int Id)
     {
@@ -116,11 +128,13 @@ public class TeacherAttendanceController : Controller
     }
 
 
+    [FeaturePermission("TeacherAttendance", AccessLevel.Edit)]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Edit(TeacherAttendance teacherattendance)
     {
-        var tafromDb = _context.teacherAttendances.Include(t => t.ClassRoom).Include(t => t.Teacher).Include(t => t.Department).FirstOrDefault(t => t.Id == teacherattendance.Id && t.IsDeleted == false);
+        //var tafromDb = _context.teacherAttendances.Include(t => t.ClassRoom).Include(t => t.Teacher).Include(t => t.Department).FirstOrDefault(t => t.Id == teacherattendance.Id && t.IsDeleted == false);
+        var tafromDb = _context.teacherAttendances.FirstOrDefault(t => t.Id == teacherattendance.Id && t.IsDeleted == false);
 
         if (tafromDb == null)
         {
@@ -129,17 +143,18 @@ public class TeacherAttendanceController : Controller
 
         tafromDb.TeacherAttendanceDate = teacherattendance.TeacherAttendanceDate;
         tafromDb.TeacherAttendanceRemarks = teacherattendance.TeacherAttendanceRemarks;
-        tafromDb.TFirstName = teacherattendance.TFirstName;
-        tafromDb.TLastName = teacherattendance.TLastName;
         tafromDb.ClassRoomId = teacherattendance.ClassRoomId;
         tafromDb.DepartmentId = teacherattendance.DepartmentId;
-        tafromDb.UpDatedAt = teacherattendance.UpDatedAt ?? DateTime.Now;
         tafromDb.TeacherAttendanceStatus = teacherattendance.TeacherAttendanceStatus;
+
+        tafromDb.UpDatedAt = DateTime.Now; // sirf audit field
 
         _context.SaveChanges();
         return Json(new { success = true, message = "Attendance Updated Successfully" });
     }
 
+
+    [FeaturePermission("TeacherAttendance", AccessLevel.Delete)]
     [HttpGet]
     public IActionResult Delete(int id)
     {
@@ -152,6 +167,8 @@ public class TeacherAttendanceController : Controller
         return View("Delete", teacherattendance);
     }
 
+
+    [FeaturePermission("TeacherAttendance", AccessLevel.Delete)]
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public IActionResult ConfirmDelete(int Id)

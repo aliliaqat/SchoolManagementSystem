@@ -43,7 +43,7 @@ public class SMSDbContext : DbContext
     public DbSet<Payment> payments { get; set; }
 
     public DbSet<Role> Role { get; set; }
-    public DbSet<Permission> Permissions { get; set; }
+    public DbSet<Permissions> Permissions { get; set; }
 
     public DbSet<Section> sections { get; set; }
 

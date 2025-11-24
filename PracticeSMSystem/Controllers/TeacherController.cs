@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using PracticeSMSystem.Data.Enums;
+using PracticeNewSms.Filters;
 using PracticeSMSystem.Data.Database;
 using PracticeSMSystem.Data.Models;
 using static System.Collections.Specialized.BitVector32;
@@ -15,14 +18,17 @@ public class TeacherController : Controller
     {
         _context = context;
     }
-    public IActionResult TeacherList(int TeacherId)
+
+    [FeaturePermission("Teacher", AccessLevel.View)]
+    public IActionResult TeacherList()
     {
         var teacherList = _context.Database.SqlQuery<TeacherDto>($"EXEC dbo.Sp_GetAllTeacherList NULL, NULL").ToList();
        
         return View(teacherList);
     }
 
-   
+
+    [FeaturePermission("Teacher", AccessLevel.Create)]
     [HttpGet]
     public IActionResult Create()
     {
@@ -39,6 +45,8 @@ public class TeacherController : Controller
         return PartialView("_Create", model);
     }
 
+
+    [FeaturePermission("Teacher", AccessLevel.Create)]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Create(Teacher teacher)
@@ -65,13 +73,14 @@ public class TeacherController : Controller
                 _context.TeacherClasses.Add(teacherClass);
                 _context.SaveChanges();
             }
-            return Json(new { success = true, message = "Attendance added successfully." });
+            return Json(new { success = true, message = "Teacher added successfully." });
         }
 
         return Json(new { success = false, message = "Validation failed.", errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
     }
 
 
+    [FeaturePermission("Teacher", AccessLevel.Edit)]
     [HttpGet]
     public IActionResult Edit(int id, string section)
     {
@@ -82,7 +91,7 @@ public class TeacherController : Controller
             return NotFound();
         }
 
-        ViewBag.Section = section; // identify section
+        ViewBag.Section = section ?? "General"; // identify section
         ViewBag.DepartmentList = new SelectList(_context.Departments.Where(d => d.IsDeleted == false).ToList(), "Id", "DName", teacher.DepartmentId);
         var allClasses = _context.classroom.Where(c => !c.IsDeleted).ToList();
         ViewBag.ClassList = new MultiSelectList(
@@ -94,6 +103,7 @@ public class TeacherController : Controller
     }
 
 
+    [FeaturePermission("Teacher", AccessLevel.Edit)]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Edit(Teacher teacher, string section)
@@ -120,8 +130,13 @@ public class TeacherController : Controller
                 teacherFromDb.Status = teacher.Status;
                 teacherFromDb.Salary = teacher.Salary;
                 teacherFromDb.DepartmentId = teacher.DepartmentId;
-                teacherFromDb.TeacherClasses.Clear();                                        // Remove old assignments
-                if (teacher.SelectedClassIds != null && teacher.SelectedClassIds.Any())     // Add new assignments
+
+                // 🔥 FIX START
+                _context.TeacherClasses.RemoveRange(teacherFromDb.TeacherClasses);   // delete old
+                teacherFromDb.TeacherClasses = new List<TeacherClass>();             // reset list
+                                                                                     // 🔥 FIX END
+
+                if (teacher.SelectedClassIds != null && teacher.SelectedClassIds.Any())
                 {
                     foreach (var classId in teacher.SelectedClassIds)
                     {
@@ -133,6 +148,7 @@ public class TeacherController : Controller
                     }
                 }
                 break;
+
 
             case "Contact":
                 teacherFromDb.Email = teacher.Email;
@@ -150,13 +166,13 @@ public class TeacherController : Controller
 
         _context.SaveChanges();
 
-        return RedirectToAction (nameof(TeacherList));
+        return Json(new { success = true, message = "Teacher updated successfully." });
     }
 
 
-
+    [FeaturePermission("Teacher", AccessLevel.Details)]
     [HttpGet]
-    public IActionResult Detail(int id, string activeTab = "General")
+    public IActionResult Details(int id, string activeTab = "General")
     {
         var teacher = _context.teachers.Include(t => t.Department).Include(t => t.TeacherClasses).ThenInclude(tc => tc.ClassRoom).FirstOrDefault(t => t.Id == id);
         if (teacher == null)
@@ -167,6 +183,8 @@ public class TeacherController : Controller
         return View("Detail", teacher);
     }
 
+
+    [FeaturePermission("Teacher", AccessLevel.Delete)]
     [HttpGet]
     public IActionResult Delete(int id)
     {
@@ -179,6 +197,8 @@ public class TeacherController : Controller
         return View("Delete", teacher);
     }
 
+
+    [FeaturePermission("Teacher", AccessLevel.Delete)]
     [HttpPost]
     public IActionResult DeleteConfirmed(int id)
     {
@@ -191,11 +211,6 @@ public class TeacherController : Controller
         var teacherList = _context.Database.SqlQuery<TeacherDto>($"EXEC dbo.Sp_GetAllTeacherList NULL, NULL").ToList();
        
         return PartialView("TeacherList", teacherList);
-    }
-
-    public IActionResult TeasData()
-    {
-        return View();
     }
 }
 

@@ -1,13 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Cuemon.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using NuGet.DependencyResolver;
+using PracticeSMSystem.Data.Enums;
+using PracticeNewSms.Filters;
 using PracticeSMSystem.Data.Database;
 using PracticeSMSystem.Data.Models;
 
 
 namespace PracticeNewSms.Controllers;
+
 
 public class AttendanceController : Controller
 {
@@ -17,7 +22,7 @@ public class AttendanceController : Controller
     {
         _context = context;
     }
-
+    [FeaturePermission("Attendance", AccessLevel.View)]
     public IActionResult AttendanceList(int? StudentId, int? ClassRoomId, int? SectionId, int? SubjectId, int? SessionId)
     {
 
@@ -31,8 +36,7 @@ public class AttendanceController : Controller
 
         return View(attendancelist);
     }
-
-    [HttpGet]
+    [FeaturePermission("Attendance", AccessLevel.Details)]
     public IActionResult Detail(int Id)
     {
         var attendance = _context.Attendance.Include(a => a.Student).Include(a => a.ClassRoom).Include(a => a.Section).Include(a => a.Subject).FirstOrDefault(a => a.Id == Id);
@@ -70,6 +74,8 @@ public class AttendanceController : Controller
     //    return PartialView("_Create", model);
     //}
 
+
+    [FeaturePermission("Attendance", AccessLevel.Create)]
     [HttpGet]
     public IActionResult Create()
     {
@@ -96,8 +102,7 @@ public class AttendanceController : Controller
     }
 
 
-
-
+    [FeaturePermission("Attendance", AccessLevel.Create)]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Create(Attendance attendance)
@@ -140,6 +145,8 @@ public class AttendanceController : Controller
     //    return PartialView("_Edit", attendance);
     //}
 
+
+    [FeaturePermission("Attendance", AccessLevel.Edit)]
     [HttpGet]
     public IActionResult Edit(int Id)
     {
@@ -173,7 +180,7 @@ public class AttendanceController : Controller
 
 
 
-
+    [FeaturePermission("Attendance", AccessLevel.Edit)]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Edit(Attendance attendance)
@@ -197,6 +204,8 @@ public class AttendanceController : Controller
         return Json(new { success = true, message = "Attendance Updated Successfully" });
     }
 
+
+    [FeaturePermission("Attendance", AccessLevel.Delete)]
     [HttpGet]
     public IActionResult Delete(int id)
     {
@@ -209,6 +218,7 @@ public class AttendanceController : Controller
         return View("Delete", attendance);
     }
 
+    [FeaturePermission("Attendance", AccessLevel.Delete)]
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public IActionResult ConfirmDelete(int Id)

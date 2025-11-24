@@ -1,6 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http; // 👈 CookieSecurePolicy ke liye
+using Microsoft.AspNetCore.Mvc; // 👈 Controller type ke liye
+using Microsoft.EntityFrameworkCore;
+using PracticeNewSms.Filters;
 using PracticeSMSystem.Data.Database;
-using Microsoft.AspNetCore.Http; // 👈 CookieSecurePolicy ke liye
+using System.Reflection;       // 👈 Assembly ke liye
+using PracticeSMSystem.Data.Models;
+
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +24,7 @@ builder.Services.AddDbContext<SMSDbContext>(options =>
 // -------------------------
 // Session
 // -------------------------
+
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -38,11 +46,23 @@ builder.Services.AddSession(options =>
 });
 
 // -------------------------
+// Authentication (Missing Earlier)
+// -------------------------
+builder.Services.AddAuthentication("MyCookieAuth")
+    .AddCookie("MyCookieAuth", options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/AccessDenied";
+    });
+
+
+
+// -------------------------
 // MVC Controllers + Views
 
 // ✅ Add Razor Runtime Compilation
+//Browser mein dikhne wala error message.
 //-------------------------
-
 
 builder.Services.AddControllersWithViews()
     .AddRazorRuntimeCompilation();
@@ -50,13 +70,41 @@ builder.Services.AddControllersWithViews()
 var app = builder.Build();
 
 // -------------------------
+// Ensure Features Registered
+// -------------------------
+void EnsureFeaturesRegistered(SMSDbContext db)
+{
+    var controllers = Assembly.GetExecutingAssembly()
+        .GetTypes()
+        .Where(t => t.IsSubclassOf(typeof(Controller)))
+        .ToList();
+
+    foreach (var t in controllers)
+    {
+        var name = t.Name.Replace("Controller", "");
+        if (!db.Features.Any(f => f.Name == name))
+        {
+            db.Features.Add(new Feature { Name = name, DisplayName = name });
+        }
+    }
+    db.SaveChanges();
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<SMSDbContext>();
+    EnsureFeaturesRegistered(db);
+}
+
+// -------------------------
 // Middleware Pipeline
 // -------------------------
+
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
-else 
+else
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
@@ -80,3 +128,7 @@ app.MapControllerRoute(
 );
 
 app.Run();
+
+
+
+

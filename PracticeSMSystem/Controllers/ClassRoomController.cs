@@ -1,14 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.Operations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using PracticeSMSystem.Data.Enums;
+using PracticeNewSms.Filters;
 using PracticeSMSystem.Data.Database;
 using PracticeSMSystem.Data.Models;
 
 namespace PracticeNewSms.Controllers;
-
 
 public class ClassRoomController : Controller
 {
@@ -17,6 +19,8 @@ public class ClassRoomController : Controller
     {
         _context = context;
     }
+
+    [FeaturePermission("ClassRoom", AccessLevel.View)]
     public IActionResult Index()
     {
         var Classroom = _context.classroom.Include(c => c.Session).Include(c => c.Department).Include(c => c.TeacherClasses).ThenInclude(tc => tc.Teacher)
@@ -29,6 +33,7 @@ public class ClassRoomController : Controller
         return View(Classroom);
     }
 
+    [FeaturePermission("ClassRoom", AccessLevel.Details)]
     public IActionResult Details(int id)
     {
         var classroom = _context.classroom.Include(c => c.Session).Include(c => c.Department).Include(c => c.TeacherClasses).ThenInclude(tc => tc.Teacher).FirstOrDefault(c => c.Id == id && !c.IsDeleted);
@@ -39,6 +44,8 @@ public class ClassRoomController : Controller
         return View(classroom);
     }
 
+
+    [FeaturePermission("ClassRoom", AccessLevel.Create)]
     [HttpGet]
     public IActionResult Create()
     {
@@ -49,6 +56,7 @@ public class ClassRoomController : Controller
         return View();
     }
 
+    [FeaturePermission("ClassRoom", AccessLevel.Create)]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Create(ClassRoom classRoom, int[] SelectedTeacherIds)
@@ -83,6 +91,8 @@ public class ClassRoomController : Controller
         return View(classRoom);
     }
 
+
+    [FeaturePermission("ClassRoom", AccessLevel.Edit)]
     [HttpGet]
     public IActionResult Edit(int id)
     {
@@ -100,6 +110,7 @@ public class ClassRoomController : Controller
         return View(classroom);
     }
 
+    [FeaturePermission("ClassRoom", AccessLevel.Edit)]
     [HttpPost]
     public IActionResult Edit(ClassRoom classRoom, int[] SelectedTeacherIds)
     {
@@ -122,6 +133,20 @@ public class ClassRoomController : Controller
             classRoomFromDb.UpdatedBy = 1;
 
             // 🔹 Add new relations
+            //if (SelectedTeacherIds != null && SelectedTeacherIds.Length > 0)
+            //{
+            //    foreach (var teacherId in SelectedTeacherIds)
+            //    {
+            //        _context.TeacherClasses.Add(new TeacherClass
+            //        {
+            //            ClassRoomId = classRoom.Id,
+            //            TeacherId = teacherId
+            //        });
+            //    }
+            //}
+
+            _context.TeacherClasses.RemoveRange(classRoomFromDb.TeacherClasses);
+
             if (SelectedTeacherIds != null && SelectedTeacherIds.Length > 0)
             {
                 foreach (var teacherId in SelectedTeacherIds)
@@ -133,14 +158,25 @@ public class ClassRoomController : Controller
                     });
                 }
             }
+
             _context.SaveChanges();
 
             return RedirectToAction("Index"); 
         }
-       
+        ViewBag.departmentlist = _context.Departments.Where(d => !d.IsDeleted).ToList();
+        ViewBag.sessionlist = _context.Sessions.Where(s => !s.IsDeleted).ToList();
+        ViewBag.teacherList = new MultiSelectList(
+            _context.teachers.Where(t => !t.IsDeleted).ToList(),
+            "Id",
+            "TFirstName",
+            SelectedTeacherIds
+        );
+
         return View(classRoom);
     }
 
+
+    [FeaturePermission("ClassRoom", AccessLevel.Delete)]
     [HttpGet]
     public IActionResult Delete(int id)
     {
@@ -154,6 +190,8 @@ public class ClassRoomController : Controller
         return View(Classroom);
     }
 
+
+    [FeaturePermission("ClassRoom", AccessLevel.Delete)]
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public IActionResult DeleteConfirmed(int id)

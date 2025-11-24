@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using PracticeSMSystem.Data.Enums;
+using PracticeNewSms.Filters;
 using PracticeSMSystem.Data.Database;
 using PracticeSMSystem.Data.Models;
 
 namespace PracticeSMSystem.Controllers;
+
 
 public class GuardianController : Controller
 {
@@ -15,6 +19,8 @@ public class GuardianController : Controller
         _context = context;
     }
 
+
+    [FeaturePermission("Guardian", AccessLevel.View)]
     public IActionResult List(int Id)
     {
         if (Id == 0)
@@ -32,6 +38,7 @@ public class GuardianController : Controller
         }
     }
 
+    [FeaturePermission("Guardian", AccessLevel.Create)]
     [HttpGet]
     public IActionResult Create()
     {
@@ -39,6 +46,7 @@ public class GuardianController : Controller
         return View();
     }
 
+    [FeaturePermission("Guardian", AccessLevel.View)]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Create(Guardian guardian, int? StudentId, string? Relationship)
@@ -82,7 +90,7 @@ public class GuardianController : Controller
     }
 
 
-
+    [FeaturePermission("Guardian", AccessLevel.AddStudents)]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult AddStudents(int guardianId, List<int> SelectedStudentIds)
@@ -112,7 +120,7 @@ public class GuardianController : Controller
 
     }
 
-
+    [FeaturePermission("Guardian", AccessLevel.StudentGuardian)]
     public IActionResult StudentGuardian(int studentId)
     {
         var selectedStudent = _context.Students.FirstOrDefault(s => s.Id == studentId && s.IsDeleted != true);
@@ -134,6 +142,8 @@ public class GuardianController : Controller
         return View("StudentGuardian", guardianStudents);
     }
 
+
+    [FeaturePermission("Guardian", AccessLevel.Edit)]
     [HttpGet]
     public IActionResult Edit(int id)
     {
@@ -150,12 +160,13 @@ public class GuardianController : Controller
         return View(guardian);
     }
 
+    [FeaturePermission("Guardian", AccessLevel.Edit)]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Edit(Guardian guardian)
     {
         var guardianDb = _context.Guardians.Include(g => g.GuardianStudents).FirstOrDefault(g => g.Id ==guardian.Id && g.IsDeleted != true);
-        if (guardian == null)
+        if (guardianDb == null)
         {
             return NotFound();
         }
@@ -187,7 +198,7 @@ public class GuardianController : Controller
     }
 
 
-
+    [FeaturePermission("Guardian", AccessLevel.Details)]
     public IActionResult Details(int id)
     {
         var guardian = _context.Guardians.Include(g => g.GuardianStudents).ThenInclude(gs => gs.Student).FirstOrDefault(g => g.Id == id && g.IsDeleted != true);
@@ -200,6 +211,8 @@ public class GuardianController : Controller
         return View(guardian);
     }
 
+
+    [FeaturePermission("Guardian", AccessLevel.Delete)]
     [HttpGet]
     public IActionResult Delete(int id)
     {
@@ -213,6 +226,7 @@ public class GuardianController : Controller
         return View(guardian);
     }
 
+    [FeaturePermission("Guardian", AccessLevel.Delete)]
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public IActionResult DeleteConfirmed(int id)

@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using NuGet.DependencyResolver;
+using PracticeSMSystem.Data.Enums;
+using PracticeNewSms.Filters;
 using PracticeSMSystem.Data.Database;
 using PracticeSMSystem.Data.Models;
 using System.Collections.Generic;
-using Microsoft.Data.SqlClient;
 
 
 namespace PracticeNewSms.Controllers;
@@ -19,6 +22,8 @@ public class StaffAttendanceController : Controller
         _context = context;
     }
 
+
+    [FeaturePermission("StaffAttendance", AccessLevel.View)]
     public IActionResult StaffAttendanceList(int? StaffId, int? DepartmentId)
     {
         var staffattendancelist = _context.Database.SqlQuery<StaffAttendanceListDto>($"EXEC dbo.Sp_GetStaffAttendanceList @StaffId ={StaffId}, @DepartmentId ={DepartmentId}").ToList();
@@ -29,7 +34,9 @@ public class StaffAttendanceController : Controller
         return View(staffattendancelist);
     }
 
-    public IActionResult Detail(int Id)
+
+    [FeaturePermission("StaffAttendance", AccessLevel.Details)]
+    public IActionResult Details(int Id)
     {
         var staffattendance = _context.staffAttendances.Include(s => s.Staff).Include(s => s.Department).FirstOrDefault(s => s.Id == Id && s.IsDeleted == false);
         if (staffattendance == null)
@@ -39,7 +46,9 @@ public class StaffAttendanceController : Controller
 
         return View(staffattendance);
     }
-    
+
+
+    [FeaturePermission("StaffAttendance", AccessLevel.Create)]
     [HttpGet]
     public IActionResult Create()
     {
@@ -64,6 +73,8 @@ public class StaffAttendanceController : Controller
         return PartialView("_CreateEdit", model);
     }
 
+
+    [FeaturePermission("StaffAttendance", AccessLevel.Create)]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Create(StaffAttendance staffAttendance)
@@ -78,7 +89,7 @@ public class StaffAttendanceController : Controller
             }
             staffAttendance.CreatedOn = DateTime.Now;
             staffAttendance.UpdatedOn = DateTime.Now;
-            staffAttendance.DeletedOn = DateTime.Now;
+            //staffAttendance.DeletedOn = DateTime.Now;
             staffAttendance.MarkedAt = DateTime.Now;
             staffAttendance.IsDeleted = false;
             staffAttendance.CreatedBy = 1;
@@ -92,6 +103,8 @@ public class StaffAttendanceController : Controller
         return Json(new { success = false, message = "Validation Fail", errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
     }
 
+
+    [FeaturePermission("StaffAttendance", AccessLevel.Edit)]
     [HttpGet]
     public IActionResult Edit(int Id)
     {
@@ -116,7 +129,7 @@ public class StaffAttendanceController : Controller
         return PartialView("_CreateEdit", staffattendance);
     }
 
-
+    [FeaturePermission("StaffAttendance", AccessLevel.Edit)]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Edit(StaffAttendance staffAttendance)
@@ -130,14 +143,16 @@ public class StaffAttendanceController : Controller
         stafromDb.DepartmentId = staffAttendance.DepartmentId;
         stafromDb.AttendanceStatus = staffAttendance.AttendanceStatus;
         stafromDb.AttendanceRemarks = staffAttendance.AttendanceRemarks;
-        stafromDb.CreatedOn = DateTime.Now;
+        //stafromDb.CreatedOn = DateTime.Now;
         stafromDb.UpdatedOn = DateTime.Now;
-        stafromDb.DeletedOn = DateTime.Now;
+        //stafromDb.DeletedOn = DateTime.Now;
 
         _context.SaveChanges();
         return Json(new { success = true, message = "Attendance Updated Successfully" });
     }
 
+
+    [FeaturePermission("StaffAttendance", AccessLevel.Delete)]
     [HttpGet]
     public IActionResult Delete(int Id)
     {
@@ -150,6 +165,8 @@ public class StaffAttendanceController : Controller
         return View("Delete", staffattendance);
     }
 
+
+    [FeaturePermission("StaffAttendance", AccessLevel.Delete)]
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public IActionResult ConfirmDelete(int Id)

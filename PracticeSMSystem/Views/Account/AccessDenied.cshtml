@@ -1,0 +1,14 @@
+﻿@model PracticeSMSystem.Data.Models.UserAccount
+
+<section class="content">
+        <h2>Access Denied</h2>
+        <p>You don't have permission to access this page.</p>
+
+    <h1>User Claims</h1>
+
+    @foreach (var c in User.Claims)
+    {
+        <p>@c.Type : @c.Value</p>
+    }
+</section>
+

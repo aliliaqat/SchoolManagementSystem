@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using PracticeSMSystem.Data.Enums;
+using PracticeNewSms.Filters;
 using PracticeSMSystem.Data.Database;
 using PracticeSMSystem.Data.Models;
 
@@ -16,6 +19,8 @@ public class SubjectController : Controller
         _context = context;
     }
 
+
+    [FeaturePermission("Subject", AccessLevel.View)]
     public IActionResult SubjectList()
     {
         var Subject = _context.subjects.Include(s => s.ClassRoom).Include(s => s.Department).Include(s => s.Teacher).Where(s => !s.IsDeleted).ToList();
@@ -28,6 +33,8 @@ public class SubjectController : Controller
         return View(Subject);
     }
 
+
+    [FeaturePermission("Subject", AccessLevel.Details)]
     public IActionResult Details(int id)
     {
         var Subject = _context.subjects.Include(s => s.Teacher).Include(s => s.Department).Include(s => s.ClassRoom).FirstOrDefault(s => s.Id == id && !s.IsDeleted);
@@ -46,6 +53,8 @@ public class SubjectController : Controller
     }
 
 
+
+    [FeaturePermission("Subject", AccessLevel.Create)]
     [HttpGet]
     public IActionResult Create()
     {
@@ -56,6 +65,8 @@ public class SubjectController : Controller
         return View();
     }
 
+
+    [FeaturePermission("Subject", AccessLevel.Create)]
     [HttpPost]
     public IActionResult Create(Subject subject)
     {
@@ -79,6 +90,8 @@ public class SubjectController : Controller
         return View(subject);
     }
 
+
+    [FeaturePermission("Subject", AccessLevel.Edit)]
     [HttpGet]
     public IActionResult Edit(int id)
     {
@@ -97,13 +110,15 @@ public class SubjectController : Controller
         return View(Subject);
     }
 
+
+    [FeaturePermission("Subject", AccessLevel.Edit)]
     [HttpPost]
     public IActionResult Edit(Subject subject)
     {
         if (ModelState.IsValid)
         {
-            var Subfromdb = _context.subjects.Include(s => s.Teacher).Include(s => s.Department).Include(s => s.ClassRoom).FirstOrDefault(s => s.Id == subject.Id);
-
+            //var Subfromdb = _context.subjects.Include(s => s.Teacher).Include(s => s.Department).Include(s => s.ClassRoom).FirstOrDefault(s => s.Id == subject.Id);
+            var Subfromdb = _context.subjects.FirstOrDefault(s => s.Id == subject.Id);
             if (Subfromdb == null) 
             {
             return NotFound();
@@ -130,6 +145,8 @@ public class SubjectController : Controller
         return View(subject);
     }
 
+
+    [FeaturePermission("Subject", AccessLevel.Delete)]
     [HttpGet]
     public IActionResult Delete(int id)
     {
@@ -142,8 +159,10 @@ public class SubjectController : Controller
         return View(Subject);
     }
 
+
+    [FeaturePermission("Subject", AccessLevel.Delete)]
     [HttpPost]
-    public IActionResult DeleteConformed(int id) 
+    public IActionResult DeleteConfirmed(int id) 
     {
      var Subject =_context.subjects.FirstOrDefault(s => s.Id == id && !s.IsDeleted);
 

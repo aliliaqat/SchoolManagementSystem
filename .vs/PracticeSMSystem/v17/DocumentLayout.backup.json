@@ -1,0 +1,164 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\SchoolManagementSystem\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{E7C307A5-4343-4B5B-998C-811344094FF3}|PracticeSMSystem\\PracticeNewSms.csproj|d:\\schoolmanagementsystem\\practicesmsystem\\controllers\\staffcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E7C307A5-4343-4B5B-998C-811344094FF3}|PracticeSMSystem\\PracticeNewSms.csproj|solutionrelative:practicesmsystem\\controllers\\staffcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E7C307A5-4343-4B5B-998C-811344094FF3}|PracticeSMSystem\\PracticeNewSms.csproj|d:\\schoolmanagementsystem\\practicesmsystem\\views\\staff\\stafflist.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E7C307A5-4343-4B5B-998C-811344094FF3}|PracticeSMSystem\\PracticeNewSms.csproj|solutionrelative:practicesmsystem\\views\\staff\\stafflist.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E7C307A5-4343-4B5B-998C-811344094FF3}|PracticeSMSystem\\PracticeNewSms.csproj|d:\\schoolmanagementsystem\\practicesmsystem\\filters\\featurepermissionfilter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E7C307A5-4343-4B5B-998C-811344094FF3}|PracticeSMSystem\\PracticeNewSms.csproj|solutionrelative:practicesmsystem\\filters\\featurepermissionfilter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E7C307A5-4343-4B5B-998C-811344094FF3}|PracticeSMSystem\\PracticeNewSms.csproj|d:\\schoolmanagementsystem\\practicesmsystem\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E7C307A5-4343-4B5B-998C-811344094FF3}|PracticeSMSystem\\PracticeNewSms.csproj|solutionrelative:practicesmsystem\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E7C307A5-4343-4B5B-998C-811344094FF3}|PracticeSMSystem\\PracticeNewSms.csproj|d:\\schoolmanagementsystem\\practicesmsystem\\controllers\\basecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E7C307A5-4343-4B5B-998C-811344094FF3}|PracticeSMSystem\\PracticeNewSms.csproj|solutionrelative:practicesmsystem\\controllers\\basecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E7C307A5-4343-4B5B-998C-811344094FF3}|PracticeSMSystem\\PracticeNewSms.csproj|d:\\schoolmanagementsystem\\practicesmsystem\\common\\permissionevaluator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E7C307A5-4343-4B5B-998C-811344094FF3}|PracticeSMSystem\\PracticeNewSms.csproj|solutionrelative:practicesmsystem\\common\\permissionevaluator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E7C307A5-4343-4B5B-998C-811344094FF3}|PracticeSMSystem\\PracticeNewSms.csproj|d:\\schoolmanagementsystem\\practicesmsystem\\filters\\featurepermissionattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E7C307A5-4343-4B5B-998C-811344094FF3}|PracticeSMSystem\\PracticeNewSms.csproj|solutionrelative:practicesmsystem\\filters\\featurepermissionattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E7C307A5-4343-4B5B-998C-811344094FF3}|PracticeSMSystem\\PracticeNewSms.csproj|d:\\schoolmanagementsystem\\practicesmsystem\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E7C307A5-4343-4B5B-998C-811344094FF3}|PracticeSMSystem\\PracticeNewSms.csproj|solutionrelative:practicesmsystem\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 8,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "D:\\SchoolManagementSystem\\PracticeSMSystem\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "PracticeSMSystem\\Controllers\\AccountController.cs",
+              "ToolTip": "D:\\SchoolManagementSystem\\PracticeSMSystem\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "PracticeSMSystem\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAAD4vzYAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T19:37:27.135Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "PermissionEvaluator.cs",
+              "DocumentMoniker": "D:\\SchoolManagementSystem\\PracticeSMSystem\\Common\\PermissionEvaluator.cs",
+              "RelativeDocumentMoniker": "PracticeSMSystem\\Common\\PermissionEvaluator.cs",
+              "ToolTip": "D:\\SchoolManagementSystem\\PracticeSMSystem\\Common\\PermissionEvaluator.cs",
+              "RelativeToolTip": "PracticeSMSystem\\Common\\PermissionEvaluator.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T19:13:52.049Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "BaseController.cs",
+              "DocumentMoniker": "D:\\SchoolManagementSystem\\PracticeSMSystem\\Controllers\\BaseController.cs",
+              "RelativeDocumentMoniker": "PracticeSMSystem\\Controllers\\BaseController.cs",
+              "ToolTip": "D:\\SchoolManagementSystem\\PracticeSMSystem\\Controllers\\BaseController.cs",
+              "RelativeToolTip": "PracticeSMSystem\\Controllers\\BaseController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAkAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T18:30:01.404Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "FeaturePermissionAttribute.cs",
+              "DocumentMoniker": "D:\\SchoolManagementSystem\\PracticeSMSystem\\Filters\\FeaturePermissionAttribute.cs",
+              "RelativeDocumentMoniker": "PracticeSMSystem\\Filters\\FeaturePermissionAttribute.cs",
+              "ToolTip": "D:\\SchoolManagementSystem\\PracticeSMSystem\\Filters\\FeaturePermissionAttribute.cs",
+              "RelativeToolTip": "PracticeSMSystem\\Filters\\FeaturePermissionAttribute.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T18:22:04.382Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "FeaturePermissionFilter.cs",
+              "DocumentMoniker": "D:\\SchoolManagementSystem\\PracticeSMSystem\\Filters\\FeaturePermissionFilter.cs",
+              "RelativeDocumentMoniker": "PracticeSMSystem\\Filters\\FeaturePermissionFilter.cs",
+              "ToolTip": "D:\\SchoolManagementSystem\\PracticeSMSystem\\Filters\\FeaturePermissionFilter.cs",
+              "RelativeToolTip": "PracticeSMSystem\\Filters\\FeaturePermissionFilter.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAAACIAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T18:22:15.003Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "StaffList.cshtml",
+              "DocumentMoniker": "D:\\SchoolManagementSystem\\PracticeSMSystem\\Views\\Staff\\StaffList.cshtml",
+              "RelativeDocumentMoniker": "PracticeSMSystem\\Views\\Staff\\StaffList.cshtml",
+              "ToolTip": "D:\\SchoolManagementSystem\\PracticeSMSystem\\Views\\Staff\\StaffList.cshtml",
+              "RelativeToolTip": "PracticeSMSystem\\Views\\Staff\\StaffList.cshtml",
+              "ViewState": "AgIAACcAAAAAAAAAAAAAAC4AAABWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-24T18:16:45.72Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "StaffController.cs",
+              "DocumentMoniker": "D:\\SchoolManagementSystem\\PracticeSMSystem\\Controllers\\StaffController.cs",
+              "RelativeDocumentMoniker": "PracticeSMSystem\\Controllers\\StaffController.cs",
+              "ToolTip": "D:\\SchoolManagementSystem\\PracticeSMSystem\\Controllers\\StaffController.cs",
+              "RelativeToolTip": "PracticeSMSystem\\Controllers\\StaffController.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABoAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T18:16:11.314Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "D:\\SchoolManagementSystem\\PracticeSMSystem\\Views\\Account\\Login.cshtml",
+              "RelativeDocumentMoniker": "PracticeSMSystem\\Views\\Account\\Login.cshtml",
+              "ToolTip": "D:\\SchoolManagementSystem\\PracticeSMSystem\\Views\\Account\\Login.cshtml",
+              "RelativeToolTip": "PracticeSMSystem\\Views\\Account\\Login.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-24T18:10:14.341Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

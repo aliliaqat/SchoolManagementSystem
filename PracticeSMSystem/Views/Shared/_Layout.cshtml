@@ -336,10 +336,13 @@
                         </a>
                         <ul class="treeview-menu">
                             <li><a asp-controller="Staff" asp-action="Index"><i class="fa fa-circle-o text-green"></i> Staff</a></li>
+
+                            <!-- Role (permission-based) -->
                             <li><a asp-controller="Role" asp-action="GetAll"><i class="fa fa-circle-o text-red"></i> Roles</a></li>
                             <li><a asp-controller="Guardian" asp-action="List"><i class="fa fa-circle-o text-yellow"></i> Guardian</a></li>
                             <li><a asp-controller="Teacher" asp-action="TeacherList"><i class="fa fa-circle-o text-blue"></i> Teachers</a></li>
                             <li><a asp-controller="TeacherAttendance" asp-action="TeacherAttendanceList"><i class="fa fa-circle-o"></i> Teacher Attendance</a></li>
+                            <!-- Permission (permission-based) -->
                             <li><a asp-controller="Permission" asp-action="Manage" asp-route-roleId="1"><i class="fa fa-circle-o text-yellow"></i> Permission</a></li>
                         </ul>
                     </li>
@@ -350,7 +353,8 @@
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a asp-controller="Student" asp-action="StudentList"><i class="fa fa-circle-o text-yellow" ></i> Students</a></li>
+                            <!-- Students (permission-based) -->
+                            <li><a asp-controller="Student" asp-action="StudentList"><i class="fa fa-circle-o text-yellow"></i> Students</a></li>
                             <li><a asp-controller="Attendance" asp-action="AttendanceList"><i class="fa fa-circle-o"></i> Attendance</a></li>
                             <li><a asp-controller="Fees" asp-action="Index"><i class="fa fa-circle-o"></i> Fees</a></li>
                             <li><a asp-controller="Payments" asp-action="Index"><i class="fa fa-circle-o"></i> Payments</a></li>
@@ -481,10 +485,6 @@
             </div>
         </div>
         <!-- ✅ END UNIVERSAL MODAL -->
-
-
-
-
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
             <!-- Create the tabs -->
@@ -646,14 +646,15 @@
                     </form>
                 </div><!-- /.tab-pane -->
             </div>
-        </aside><!-- /.control-sidebar -->
+        </aside>
+
+        <!-- /.control-sidebar -->
         <!-- Add the sidebar's background. This div must be placed
              immediately after the control sidebar -->
         <div class="control-sidebar-bg"></div>
-    </div><!-- ./wrapper -->
+    </div>
 
-
-
+    <!-- ./wrapper -->
     <!-- jQuery pehle -->
     <script src="~/plugins/jQuery/jQuery-2.1.4.min.js"></script>
 
@@ -679,17 +680,23 @@
     <script src="~/plugins/fastclick/fastclick.min.js"></script>
 
     <!-- AdminLTE -->
-    <script src="~/dist/js/app.min.js"></script>
+   @*  <script src="~/dist/js/app.min.js"></script>
     <script src="~/dist/js/pages/dashboard.js"></script>
+    <script src="~/dist/js/demo.js"></script> *@
+
+    <script src="~/dist/js/app.min.js"></script>
+    @* Load dashboard.js only on dashboard page *@
+    @if (ViewData["Title"] == "Dashboard")
+    {
+        <script src="~/dist/js/pages/dashboard.js"></script>
+    }
     <script src="~/dist/js/demo.js"></script>
-
-
 
 
 
     <!-- ✅ UNIVERSAL AJAX SCRIPT -->
     <script>
-        // ✅ Function to open modal with dynamic content
+         // ✅ Function to open modal with dynamic content
         function openModal(url, modalId = '#appModal', contentId = '#modalContent') {
             $.get(url)
                 .done(function (data) {
@@ -741,12 +748,11 @@
                 }
             });
         });
+
+        
     </script>
 
     <!-- ✅ END UNIVERSAL AJAX SCRIPT -->
-
-
-
     @RenderSection("Scripts", required: false)
 
 

@@ -1,10 +1,11 @@
 ﻿@model IEnumerable<PracticeSMSystem.Data.Models.Staff>
-
 @{
     ViewData["Title"] = "Staff List";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var GenderArray = new string[] { "", "Male", "Female", "Other" };
     var roleList = (Dictionary<int, string>)ViewBag.RoleList;
+    var HasEditAccess = (bool)ViewBag.Edit;
+    var HasDeleteAccess = (bool)ViewBag.Delete;
 }
 
 <section class="content-header">
@@ -43,7 +44,10 @@
                                 <th>Role</th>
                                 <th>Email</th>
                                 <th>Phone</th>
-                                <th style="text-align:center">Actions</th>
+                                @if (HasEditAccess == true || HasDeleteAccess == true)
+                                {
+                                    <th style="text-align:center">Actions</th>
+                                }
                             </tr>
                         </thead>
                         <tbody>
@@ -60,10 +64,19 @@
                                         <td>@roleList[staff.RoleId]</td>
                                         <td>@staff.Email</td>
                                         <td>@staff.Phone</td>
-                                        <td style="text-align:right">
-                                            <a asp-action="Edit" asp-route-id="@staff.Id" class="btn btn-sm btn-primary">Edit</a>
-                                            <a class="btn btn-sm btn-danger" onclick="document.getElementById('staffToDelete').value=@staff.Id" data-toggle="modal" data-target="#staffDeleteModel">Delete</a>
-                                        </td>
+                                        @if (HasEditAccess == true || HasDeleteAccess == true)
+                                        {
+                                            <td style="text-align:right">
+                                                @if (HasEditAccess == true)
+                                                {
+                                                    <a asp-action="Edit" asp-route-id="@staff.Id" class="btn btn-sm btn-primary">Edit</a>
+                                                }
+                                                @if (HasDeleteAccess == true)
+                                                {
+                                                    <a class="btn btn-sm btn-danger" onclick="document.getElementById('staffToDelete').value=@staff.Id" data-toggle="modal" data-target="#staffDeleteModel">Delete</a>
+                                                }
+                                            </td>
+                                        }
                                     </tr>
                                 }
                             }

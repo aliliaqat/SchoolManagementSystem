@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using PracticeSMSystem.Data.Enums;
+using PracticeNewSms.Filters;
 using PracticeSMSystem.Data.Database;
 using PracticeSMSystem.Data.Models;
 
@@ -14,6 +17,8 @@ public class EnrolementController : Controller
     {
         _context = context;
     }
+
+    [FeaturePermission("Enrolement", AccessLevel.View)]
     public IActionResult ClassesList()
     {
         var ClassRoom = _context.Database.SqlQuery<ClassDto>($"Exec dbo.Sp_GetClassesList").ToList();
